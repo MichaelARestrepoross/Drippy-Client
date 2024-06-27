@@ -48,7 +48,7 @@ function Profile() {
         <>
           <img
             src={userDetails.photo || placeholderImage}
-            alt={userDetails.first_name}
+            alt={userDetails.username}
             style={{
               marginTop: 100,
               marginBottom: 20,
@@ -58,14 +58,11 @@ function Profile() {
             }}
           />
 
-          <h1>{userDetails.first_name}'s Profile Page</h1>
+          <h1>{userDetails.username}'s Profile Page</h1>
 
           <p>Email: {userDetails.email}</p>
-          <p>First Name: {userDetails.first_name}</p>
-          <p>
-            Last Name:{' '}
-            {userDetails.last_name ? userDetails.last_name : 'Unknown'}
-          </p>
+          <p>Username: {userDetails.username}</p>
+
 
           <button onClick={handleLogout}>Logout</button>
         </>

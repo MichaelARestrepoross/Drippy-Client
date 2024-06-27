@@ -13,8 +13,7 @@ function Register() {
   const [newUser, setNewUser] = useState({
     email: "",
     password: "",
-    first_name: "",
-    last_name: "",
+    username: "",
   });
 
   const navigate = useNavigate();
@@ -26,9 +25,8 @@ function Register() {
   const handleClearState = () => {
     setNewUser({
       email: "",
-      first_name: "",
-      last_name: "",
-      photo: "",
+      password: "",
+      username:"",
     });
   };
 
@@ -81,28 +79,16 @@ function Register() {
       <form onSubmit={handleRegister}>
         <h3>Sign Up</h3>
         <div>
-          <label htmlFor="first_name">
-            First Name:{" "}
+          <label htmlFor="username">
+            Username:{" "}
             <input
               type="text"
-              id="first_name"
-              name="first_name"
+              id="username"
+              name="username"
               placeholder="First name"
-              value={newUser.first_name}
+              value={newUser.username}
               onChange={handleChange}
               required
-            />
-          </label>
-
-          <label htmlFor="last_name">
-            Last Name:{" "}
-            <input
-              type="text"
-              id="last_name"
-              name="last_name"
-              placeholder="Last name"
-              value={newUser.last_name}
-              onChange={handleChange}
             />
           </label>
 
