@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -15,8 +19,6 @@ body {
 }
 
 button {
-  width: 85px;
-  height: 45px;
   color: white;
   background: green;
   border-radius: 5px;
