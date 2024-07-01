@@ -46,42 +46,59 @@ function Login() {
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h3>Login</h3>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">
-          Email Address:{' '}
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter email"
-            value={loginUser.email}
-            onChange={handleChange}
-          />
-        </label>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h3 className="text-2xl font-bold mb-6 text-center">Login</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="email" className="block text-gray-700">
+              Email Address:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter email"
+              value={loginUser.email}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
 
-        <label htmlFor="password">
-          Password:{' '}
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter password"
-            value={loginUser.password}
-            onChange={handleChange}
-          />
-        </label>
+          <div>
+            <label htmlFor="password" className="block text-gray-700">
+              Password:
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+              value={loginUser.password}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
 
-        <button type="submit">Submit</button>
-      </form>
-      <div>
-        New user <Link to="/register">Register Here</Link>
-        <p>--Or continue with--</p>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none focus:bg-green-700"
+          >
+            Submit
+          </button>
+        </form>
+        <div className="mt-6 text-center">
+          <p>
+            New user? <Link to="/register" className="text-green-600">Register Here</Link>
+          </p>
+          <p className="mt-4 text-gray-600">--Or continue with--</p>
+          <div className="mt-4">
+            <SignInWithGoogle />
+          </div>
+        </div>
       </div>
-      <SignInWithGoogle />
     </div>
-  )
+  );
 }
 
 export default Login

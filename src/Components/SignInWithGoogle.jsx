@@ -48,8 +48,8 @@ function SignInWithGoogle() {
   }
 
   return (
-    <div style={{ cursor: 'pointer' }} onClick={googleLogin}>
-      <img src={googleBadge} width={'20%'} />
+    <div className="flex justify-center items-center cursor-pointer" onClick={googleLogin}>
+      <img src={googleBadge} width={'80%'} />
     </div>
   )
 }

@@ -75,25 +75,29 @@ function Register() {
     }
   };
   return (
-    <div style={{ textAlign: "center" }}>
-      <form onSubmit={handleRegister}>
-        <h3>Sign Up</h3>
-        <div>
-          <label htmlFor="username">
-            Username:{" "}
+    <div className="min-h-screen flex items-center justify-center bg-gray-200">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h3 className="text-2xl font-bold mb-6 text-center">Sign Up</h3>
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-gray-700">
+              Username:
+            </label>
             <input
               type="text"
               id="username"
               name="username"
-              placeholder="First name"
+              placeholder="Enter username"
               value={newUser.username}
               onChange={handleChange}
               required
+              className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
-          </label>
-
-          <label htmlFor="email">
-            Email Address:{" "}
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-gray-700">
+              Email Address:
+            </label>
             <input
               type="email"
               id="email"
@@ -102,32 +106,39 @@ function Register() {
               value={newUser.email}
               onChange={handleChange}
               required
+              className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
-          </label>
-
-          <label htmlFor="password">
-            Password:{" "}
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-gray-700">
+              Password:
+            </label>
             <input
               type="password"
-              placeholder="Enter password"
               id="password"
               name="password"
+              placeholder="Enter password"
               value={newUser.password}
               onChange={handleChange}
               required
+              className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
-          </label>
-
-          <button type="submit" style={{ width: 140 }}>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+          >
             Sign Up
           </button>
+        </form>
+        <div className="mt-6 text-center">
+          <p>
+            Already registered? <Link to="/login" className="text-blue-600">Login</Link>
+          </p>
         </div>
-        <p>
-          Already registered <Link to="/login">Login</Link>
-        </p>
-      </form>
+      </div>
     </div>
-  );
+  )
 }
 
 export default Register;
