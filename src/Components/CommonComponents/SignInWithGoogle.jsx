@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
-import { auth } from '../helpers/firebase'
-import { register } from '../helpers/register'
-import { fetchUser } from '../helpers/fetchUser'
+import { auth } from '../../helpers/firebase'
+import { register } from '../../helpers/register'
+import { fetchUser } from '../../helpers/fetchUser'
 
-import googleBadge from '../assets/google.png'
+import googleBadge from '../../assets/google.png'
 
 async function handleGoogleSignIn() {
   const provider = new GoogleAuthProvider()
@@ -19,7 +19,9 @@ async function handleGoogleSignIn() {
 
     // Check if user exists in your backend
     const foundUser = await fetchUser(user, token)
+    console.log("found user:",foundUser);
     if (!foundUser.uid) {
+      console.log("im registering.")
       // User does not exist in backend, create the user
       const { photoURL, uid } = user
       await register(user, photoURL, uid)

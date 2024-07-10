@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import { getUserData } from '../helpers/getUserData'
-import { logout } from '../helpers/logout'
+import { getUserData } from '../../helpers/getUserData'
+import { logout } from '../../helpers/logout'
 
-import placeholderImage from '../assets/placeholder.png'
+import placeholderImage from '../../assets/placeholder.png'
 
 function Profile() {
   const navigate = useNavigate()

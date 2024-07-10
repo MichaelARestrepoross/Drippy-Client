@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 import SignInWithGoogle from './SignInWithGoogle'
-import { auth } from '../helpers/firebase'
+import { auth } from '../../helpers/firebase'
 
 function Login() {
   const navigate = useNavigate()
