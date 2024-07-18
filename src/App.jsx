@@ -1,52 +1,58 @@
-import { useEffect, useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
+import { useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-import { auth } from './helpers/firebase'
+import { auth } from './helpers/firebase';
 
 // Import Common Components
-import Footer from './Components/CommonComponents/Footer'
-import Header from './Components/CommonComponents/Header'
-import HomePage from './Components/CommonComponents/HomePage'
-import LandingPage from './Components/CommonComponents/LandingPage'
-import Login from './Components/CommonComponents/Login'
-import Profile from './Components/CommonComponents/Profile'
-import Register from './Components/CommonComponents/Register'
-import SignInWithGoogle from './Components/CommonComponents/SignInWithGoogle'
-import Test from './Components/CommonComponents/Test'
+import Footer from './Components/CommonComponents/Footer';
+import Header from './Components/CommonComponents/Header';
+import HomePage from './Components/CommonComponents/HomePage';
+import LandingPage from './Components/CommonComponents/LandingPage';
+import Login from './Components/CommonComponents/Login';
+import Profile from './Components/CommonComponents/Profile';
+import Register from './Components/CommonComponents/Register';
+import SignInWithGoogle from './Components/CommonComponents/SignInWithGoogle';
+import Test from './Components/CommonComponents/Test';
 
 // Import Other Components
-import ClothesCard from './Components/ClothesCard'
-import ClothesForm from './Components/ClothesForm'
-import ClothesIndex from './Components/ClothesIndex'
-import Gemini from './Components/Gemini'
-import GenerateOutfit from './Components/GenerateOutfit'
-import GptGenerator from './Components/GptGenerator'
-import OpenCamera from './Components/OpenCamera'
-import UploadImage from './Components/UploadImage'
-import Wardrobe from './Components/Wardrobe'
+import ClothesCard from './Components/ClothesCard';
+import ClothesForm from './Components/ClothesForm';
+import ClothesIndex from './Components/ClothesIndex';
+import Gemini from './Components/Gemini';
+import GenerateOutfit from './Components/GenerateOutfit';
+import GptGenerator from './Components/GptGenerator';
+import OpenCamera from './Components/OpenCamera';
+import UploadImage from './Components/UploadImage';
+import Wardrobe from './Components/Wardrobe';
+import GetLocation from './Components/GetLocation';
 
-import 'react-toastify/dist/ReactToastify.css'
-import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 function App() {
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      setUser(user)
-    })
-  }, [])
+      setUser(user);
+    });
+
+    const loadScript = (url) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    };
+
+    const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+    loadScript(`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`);
+  }, []);
+
   return (
     <div>
-      <Routes
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 100,
-        }}
-      >
+      <Routes>
         <Route path="/" element={user ? <Navigate to="/profile" /> : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -70,10 +76,11 @@ function App() {
         <Route path="/opencamera" element={<OpenCamera />} />
         <Route path="/uploadimage" element={<UploadImage />} />
         <Route path="/wardrobe" element={<Wardrobe />} />
+        <Route path="/getlocation" element={<GetLocation />} />
       </Routes>
       <ToastContainer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
