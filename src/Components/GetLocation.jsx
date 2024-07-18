@@ -24,11 +24,11 @@ const GetLocation = () => {
     });
   };
 
-  useEffect(() => {
-    if (!window.google) {
-      console.error('Google Maps JavaScript API library must be loaded.');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!window.google) {
+  //     console.error('Google Maps JavaScript API library must be loaded.');
+  //   }
+  // }, []);
 
   const formatCoordinate = (coordinate, type) => {
     const direction = type === 'lat' 
