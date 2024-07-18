@@ -95,6 +95,7 @@ const ClothesIndex = () => {
         <p className="text-center">Loading...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {console.log(clothes)}
           {clothes.map((item) => (
             <ClothesCard key={item.clothes_id} {...item} />
           ))}
