@@ -33,12 +33,32 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
   }, [initialValues]);
 
   useEffect(() => {
+    const fetchOptions = async (url, setter) => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch options');
+        }
+        const data = await response.json();
+        setter(data);
+      } catch (error) {
+        console.error('Fetch error:', error);
+        toast.error(error.message, { position: 'bottom-center' });
+      }
+    };
 
-
+    fetchOptions('http://localhost:3003/api/types', setTypes);
+    fetchOptions('http://localhost:3003/api/materials', setMaterials);
+    fetchOptions('http://localhost:3003/api/temperature-ranges', setTemperatureRanges);
+    fetchOptions('http://localhost:3003/api/humidity-levels', setHumidityLevels);
   }, []);
 
   const handleChange = (e) => {
-
+    const { name, value, type, checked } = e.target;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleSubmit = async (e) => {
