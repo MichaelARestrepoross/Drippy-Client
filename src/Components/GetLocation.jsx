@@ -1,52 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify'; // Ensure toast is imported if not already
 import GetWeather from './GetWeather';
 
 const GetLocation = () => {
   const [city, setCity] = useState('');
   const [stateName, setStateName] = useState('');
-  const [label, setLabel] = useState('');
-  const [coordinates, setCoordinates] = useState(null);
+  const [label, setLabel] = useState('');  // This will be used as 'name' in the table
   const [locations, setLocations] = useState([]);
 
-  const handleSearch = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      return;
+    }
+
     const location = `${city}, ${stateName}`;
     const geocoder = new window.google.maps.Geocoder();
 
-    geocoder.geocode({ address: location }, (results, status) => {
+    geocoder.geocode({ address: location }, async (results, status) => {
       if (status === 'OK') {
         const location = results[0].geometry.location;
-        const formattedLat = formatCoordinate(location.lat(), 'lat');
-        const formattedLng = formatCoordinate(location.lng(), 'lng');
-        const newCoordinates = {
-          lat: location.lat(),
-          lng: location.lng(),
-          formattedLat,
-          formattedLng,
-          label,
-          city,
-          stateName
+        const newLocation = {
+          name: label,
+          x_coordinate: location.lat(),
+          y_coordinate: location.lng()
         };
-        setCoordinates(newCoordinates);
-        setLocations([...locations, newCoordinates]);
-        setCity('');
-        setStateName('');
-        setLabel('');
+
+        try {
+          const response = await fetch('http://localhost:3003/api/locations', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newLocation),
+          });
+
+          if (response.status === 403) {
+            toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error('Failed to add location');
+          }
+
+          const data = await response.json();
+          toast.success('Location added successfully!', { position: 'bottom-center' });
+          setLocations([...locations, newLocation]);
+          setCity('');
+          setStateName('');
+          setLabel('');
+        } catch (error) {
+          console.error('Submit error:', error);
+          toast.error(error.message, { position: 'bottom-center' });
+        }
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
+        toast.error(`Geocode failure: ${status}`, { position: 'bottom-center' });
       }
     });
-  };
-
-  const formatCoordinate = (coordinate, type) => {
-    const direction = type === 'lat'
-      ? coordinate >= 0 ? 'N' : 'S'
-      : coordinate >= 0 ? 'E' : 'W';
-    return `${Math.abs(coordinate).toFixed(6)}° ${direction}`;
-  };
-
-  const handleLocationChange = (event) => {
-    const selectedLocation = locations.find(location => location.label === event.target.value);
-    setCoordinates(selectedLocation);
   };
 
   return (
@@ -65,29 +81,21 @@ const GetLocation = () => {
       />
       <input
         type="text"
-        placeholder="Label"
+        placeholder="Location Name"
         value={label}
         onChange={(e) => setLabel(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSubmit}>Add Location</button>
       {locations.length > 0 && (
         <div>
-          <label htmlFor="locationSelect">My Locations: </label>
-          <select id="locationSelect" onChange={handleLocationChange}>
-            <option value="">Select a location</option>
-            {locations.map((location, index) => (
-              <option key={index} value={location.label}>
-                {location.label} ({location.city}, {location.stateName})
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-      {coordinates && (
-        <div>
-          <p>Latitude: {coordinates.formattedLat}</p>
-          <p>Longitude: {coordinates.formattedLng}</p>
-          <GetWeather coordinates={coordinates} />
+          {locations.map((location, index) => (
+            <div key={index}>
+              <p>{location.name} ({location.city}, {location.stateName})</p>
+              <p>Latitude: {location.x_coordinate.toFixed(6)}</p>
+              <p>Longitude: {location.y_coordinate.toFixed(6)}</p>
+              {/* <GetWeather coordinates={{ lat: location.x_coordinate, lng: location.y_coordinate }} /> */}
+            </div>
+          ))}
         </div>
       )}
     </div>
