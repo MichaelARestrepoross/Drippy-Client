@@ -11,7 +11,7 @@ const ClothesCard = ({ id, image_base64, image_url, prompt, color, type_name, ma
         <p className="text-gray-600 mb-2">Color: {color}</p>
         <p className="text-gray-600 mb-2">Type: {type_name}</p>
         <p className="text-gray-600 mb-2">Material: {material_name}</p>
-        <p className="text-gray-600 mb-2">Temperature Range: {min_temp}°C - {max_temp}°C</p>
+        <p className="text-gray-600 mb-2">Temperature Range: {min_temp}°F - {max_temp}°F</p>
         <p className="text-gray-600 mb-2">Humidity: {min_humidity}% - {max_humidity}%</p>
       </div>
     </div>
