@@ -18,6 +18,7 @@ const GenerateOutfit = () => {
   const [response, setResponse] = useState('');
   const [outfit, setOutfit] = useState([]);
   const [error, setError] = useState('');
+  const [selectedWeatherData, setSelectedWeatherData] = useState(null);
 
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -167,7 +168,12 @@ const GenerateOutfit = () => {
           {selectedLocation && (
             <div>
               <h2 className="text-2xl font-bold">{selectedLocation.name}</h2>
-              <GetWeather coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }} />
+              <GetWeather 
+                coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }}
+                selectedWeatherData={selectedWeatherData}
+                setSelectedWeatherData={setSelectedWeatherData}
+            />
+            {console.log(selectedWeatherData)}
             </div>
           )}
         </div>
