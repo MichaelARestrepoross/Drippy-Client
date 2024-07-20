@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import ClothesForm from './ClothesForm'; // Adjust the import path as needed
+import OpenCamera from './OpenCamera'; // Adjust the import path as needed
 
 function Wardrobe() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const downloadImage = () => {
+    if (capturedImage) {
+      const link = document.createElement('a');
+      link.href = capturedImage;
+      link.download = 'captured-image.png'; // Name of the file
+      link.click(); // Trigger a click to start the download
+    }
+  };
 
   return (
     <div className="p-6">
@@ -16,6 +28,33 @@ function Wardrobe() {
       >
         Add New Clothes
       </button>
+      <button 
+        onClick={() => setIsCameraOpen(true)}
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition ml-4"
+      >
+        Open Camera
+      </button>
+
+      {isCameraOpen && (
+        <OpenCamera 
+          isCameraOpen={isCameraOpen}
+          setIsCameraOpen={setIsCameraOpen}
+          setCapturedImage={setCapturedImage}
+        />
+      )}
+
+      {capturedImage && (
+        <div className="mt-4">
+          <h2 className="text-xl font-bold mb-2">Captured Image:</h2>
+          <img src={capturedImage} alt="Captured" className="w-full max-w-md" />
+          <button
+            onClick={downloadImage}
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-2"
+          >
+            Download Image
+          </button>
+        </div>
+      )}
 
       <ClothesForm isOpen={isModalOpen} onClose={closeModal} />
     </div>

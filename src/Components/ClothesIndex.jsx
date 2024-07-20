@@ -6,6 +6,7 @@ const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
   const [user, setUser] = useState(null);
   const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -88,14 +89,19 @@ const ClothesIndex = () => {
     fetchLocations();
   }, []);
 
+  const handleLocationChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedLocation = locations.find(location => location.location_id === parseInt(selectedId));
+    setSelectedLocation(selectedLocation);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {console.log(clothes)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg-grid-cols-3 gap-4">
           {clothes.map((item) => (
             <ClothesCard key={item.clothes_id} {...item} />
           ))}
@@ -112,13 +118,24 @@ const ClothesIndex = () => {
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {locations.map((location) => (
-            <div key={location.location_id}>
-              <h2>{location.name}</h2>
-              <p>Coordinates: ({location.x_coordinate}, {location.y_coordinate})</p>
+        <div className="text-center">
+          <select 
+            onChange={handleLocationChange} 
+            className="bg-white border border-gray-300 rounded px-4 py-2 mb-4"
+          >
+            <option value="">Select a Location</option>
+            {locations.map((location) => (
+              <option key={location.location_id} value={location.location_id}>
+                {location.name}
+              </option>
+            ))}
+          </select>
+          {selectedLocation && (
+            <div>
+              <h2 className="text-2xl font-bold">{selectedLocation.name}</h2>
+              <p>Coordinates: ({selectedLocation.x_coordinate}, {selectedLocation.y_coordinate})</p>
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>
