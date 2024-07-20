@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import GetWeather from './GetWeather';
 
 const GetLocation = () => {
   const [city, setCity] = useState('');
   const [stateName, setStateName] = useState('');
-  const [formattedCoordinates, setFormattedCoordinates] = useState(null);
+  const [label, setLabel] = useState('');
+  const [coordinates, setCoordinates] = useState(null);
+  const [locations, setLocations] = useState([]);
 
   const handleSearch = () => {
     const location = `${city}, ${stateName}`;
@@ -14,27 +17,36 @@ const GetLocation = () => {
         const location = results[0].geometry.location;
         const formattedLat = formatCoordinate(location.lat(), 'lat');
         const formattedLng = formatCoordinate(location.lng(), 'lng');
-        setFormattedCoordinates({
-          lat: formattedLat,
-          lng: formattedLng
-        });
+        const newCoordinates = {
+          lat: location.lat(),
+          lng: location.lng(),
+          formattedLat,
+          formattedLng,
+          label,
+          city,
+          stateName
+        };
+        setCoordinates(newCoordinates);
+        setLocations([...locations, newCoordinates]);
+        setCity('');
+        setStateName('');
+        setLabel('');
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
     });
   };
 
-  // useEffect(() => {
-  //   if (!window.google) {
-  //     console.error('Google Maps JavaScript API library must be loaded.');
-  //   }
-  // }, []);
-
   const formatCoordinate = (coordinate, type) => {
-    const direction = type === 'lat' 
+    const direction = type === 'lat'
       ? coordinate >= 0 ? 'N' : 'S'
       : coordinate >= 0 ? 'E' : 'W';
     return `${Math.abs(coordinate).toFixed(6)}° ${direction}`;
+  };
+
+  const handleLocationChange = (event) => {
+    const selectedLocation = locations.find(location => location.label === event.target.value);
+    setCoordinates(selectedLocation);
   };
 
   return (
@@ -51,11 +63,31 @@ const GetLocation = () => {
         value={stateName}
         onChange={(e) => setStateName(e.target.value)}
       />
+      <input
+        type="text"
+        placeholder="Label"
+        value={label}
+        onChange={(e) => setLabel(e.target.value)}
+      />
       <button onClick={handleSearch}>Search</button>
-      {formattedCoordinates && (
+      {locations.length > 0 && (
         <div>
-          <p>Latitude: {formattedCoordinates.lat}</p>
-          <p>Longitude: {formattedCoordinates.lng}</p>
+          <label htmlFor="locationSelect">My Locations: </label>
+          <select id="locationSelect" onChange={handleLocationChange}>
+            <option value="">Select a location</option>
+            {locations.map((location, index) => (
+              <option key={index} value={location.label}>
+                {location.label} ({location.city}, {location.stateName})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+      {coordinates && (
+        <div>
+          <p>Latitude: {coordinates.formattedLat}</p>
+          <p>Longitude: {coordinates.formattedLng}</p>
+          <GetWeather coordinates={coordinates} />
         </div>
       )}
     </div>
