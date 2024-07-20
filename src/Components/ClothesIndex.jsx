@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
+import GetWeather from './GetWeather';
 
 const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
@@ -134,6 +135,7 @@ const ClothesIndex = () => {
             <div>
               <h2 className="text-2xl font-bold">{selectedLocation.name}</h2>
               <p>Coordinates: ({selectedLocation.x_coordinate}, {selectedLocation.y_coordinate})</p>
+              <GetWeather coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }} />
             </div>
           )}
         </div>
