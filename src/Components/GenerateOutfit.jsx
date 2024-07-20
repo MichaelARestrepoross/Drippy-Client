@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import OpenAI from 'openai';
 import ClothesCard from './ClothesCard';
+import GetWeather from './GetWeather';
 
 const API_KEY = import.meta.env.VITE_OPENAI_KEY;
 
@@ -17,6 +18,10 @@ const GenerateOutfit = () => {
   const [response, setResponse] = useState('');
   const [outfit, setOutfit] = useState([]);
   const [error, setError] = useState('');
+
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -57,8 +62,52 @@ const GenerateOutfit = () => {
       }
     };
 
+    const fetchLocations = async () => {
+        const token = localStorage.getItem('token');
+  
+        if (!token) {
+          toast.error('No token found. Please log in.', { position: 'bottom-center' });
+          setLoading(false);
+          return;
+        }
+  
+        try {
+          const response = await fetch('http://localhost:3003/api/locations', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+  
+          if (response.status === 403) {
+            toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+            throw new Error('Forbidden: Invalid token or access denied.');
+          }
+  
+          if (!response.ok) {
+            throw new Error('Failed to fetch locations');
+          }
+  
+          const data = await response.json();
+          setUser(data.user);
+          setLocations(data.locations);
+        } catch (error) {
+          console.error('Fetch error:', error);
+          toast.error(error.message, { position: 'bottom-center' });
+        } finally {
+          setLoading(false);
+        }
+      };
+    fetchLocations();
     fetchClothes();
   }, []);
+
+  const handleLocationChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedLocation = locations.find(location => location.location_id === parseInt(selectedId));
+    setSelectedLocation(selectedLocation);
+  };
 
   const callChatGPT = async (clothingData) => {
     setLoading(true);
@@ -99,6 +148,30 @@ const GenerateOutfit = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+    <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Locations</h1>
+      {loading ? (
+        <p className="text-center">Loading...</p>
+      ) : (
+        <div className="text-center">
+          <select 
+            onChange={handleLocationChange} 
+            className="bg-white border border-gray-300 rounded px-4 py-2 mb-4"
+          >
+            <option value="">Select a Location</option>
+            {locations.map((location) => (
+              <option key={location.location_id} value={location.location_id}>
+                {location.name}
+              </option>
+            ))}
+          </select>
+          {selectedLocation && (
+            <div>
+              <h2 className="text-2xl font-bold">{selectedLocation.name}</h2>
+              <GetWeather coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }} />
+            </div>
+          )}
+        </div>
+      )}
       <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
       {loading ? (
         <p className="text-center">Loading...</p>
