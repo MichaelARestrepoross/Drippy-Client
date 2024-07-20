@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ClothesForm from './ClothesForm'; // Adjust the import path as needed
-
 import Gemini from './Gemini'; // Adjust the import path as needed
 import OpenCamera from './OpenCamera'; // Adjust the import path as needed
 
@@ -12,10 +11,8 @@ function Wardrobe() {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
 
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
 
   const handleUrlSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +31,7 @@ function Wardrobe() {
       link.download = 'captured-image.png'; // Name of the file
       link.click(); // Trigger a click to start the download
     }
-
+  };
 
   return (
     <div className="p-6">
@@ -61,13 +58,8 @@ function Wardrobe() {
         <ClothesForm initialValues={initialValues} isOpen={isModalOpen} onClose={closeModal} />
       )}
 
-      <button 
-        onClick={openModal}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-      >
-        Add Clothes Camera
-      </button>
-      <button 
+
+      <button
         onClick={() => setIsCameraOpen(true)}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition ml-4"
       >
@@ -75,7 +67,7 @@ function Wardrobe() {
       </button>
 
       {isCameraOpen && (
-        <OpenCamera 
+        <OpenCamera
           isCameraOpen={isCameraOpen}
           setIsCameraOpen={setIsCameraOpen}
           setCapturedImage={setCapturedImage}
@@ -94,7 +86,6 @@ function Wardrobe() {
           </button>
         </div>
       )}
-
     </div>
   );
 }
