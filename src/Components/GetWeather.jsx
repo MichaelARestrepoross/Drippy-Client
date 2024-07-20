@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const GetWeather = ({ coordinates }) => {
+const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }) => {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const TOMORROW_IO_API_KEY = import.meta.env.VITE_TOMORROW_IO_API_KEY;
@@ -29,6 +29,7 @@ const GetWeather = ({ coordinates }) => {
             }));
 
             setWeatherData(filteredData)
+            setSelectedWeatherData(filteredData)
           } else {
             setError('Unexpected data format')
           }
