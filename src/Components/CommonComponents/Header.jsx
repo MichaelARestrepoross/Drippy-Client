@@ -13,11 +13,16 @@ const Header = () => {
     navigate('/wardrobe');
   };
 
+  const handleNavigateLanding = () => {
+    navigate('/landingpage');
+  };
+
+
   return (
     <header className="bg-gray-400 shadow h-20"> 
       <div className="container mx-auto px-6 flex justify-between items-center h-full">
         <div className="flex items-center">
-          <img src={logo} alt="Logo" className="h-16 w-auto" /> 
+          <img src={logo} alt="Logo" className="h-16 w-auto" onClick={handleNavigateLanding}/> 
         </div>
         <div className="flex items-center space-x-4">
           <button
