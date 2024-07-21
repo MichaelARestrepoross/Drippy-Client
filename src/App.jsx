@@ -65,20 +65,20 @@ function App() {
         {/* Common Components */}
         <Route path="/footer" element={<Footer />} />
         <Route path="/header" element={<Header />} />
-        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/homepage" element={user ?<HomePage />:<Login /> } />
         <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/signinwithgoogle" element={<SignInWithGoogle />} />
 
         {/* Other Components */}
         <Route path="/clothescard" element={<ClothesCard />} />
         <Route path="/clothesform" element={<ClothesForm />} />
-        <Route path="/clothesindex" element={<ClothesIndex />} />
+        <Route path="/clothesindex" element={user ?<ClothesIndex />:<Login />} />
         <Route path="/gemini" element={<Gemini />} />
-        <Route path="/generateoutfit" element={<GenerateOutfit />} />
+        <Route path="/generateoutfit" element={ user ? <GenerateOutfit />:<Login />} />
         <Route path="/gptgenerator" element={<GptGenerator />} />
         <Route path="/opencamera" element={<OpenCamera />} />
         <Route path="/uploadimage" element={<UploadImage />} />
-        <Route path="/wardrobe" element={<Wardrobe />} />
+        <Route path="/wardrobe" element={user ? <Wardrobe />: <Login />} />
         <Route path="/getlocation" element={<GetLocation />} />
       </Routes>
       {/* <Footer/> */}
