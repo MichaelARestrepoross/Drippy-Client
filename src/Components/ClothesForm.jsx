@@ -92,6 +92,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       const data = await response.json();
       toast.success('Clothes created successfully!', { position: 'bottom-center' });
       onClose(); // Close the modal on successful submission
+      window.location.reload(); // Refresh the page after successful submission
     } catch (error) {
       console.error('Submit error:', error);
       toast.error(error.message, { position: 'bottom-center' });
