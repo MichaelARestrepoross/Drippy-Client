@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ClothesForm from './ClothesForm'; // Adjust the import path as needed
 import Gemini from './Gemini'; // Adjust the import path as needed
 import OpenCamera from './OpenCamera'; // Adjust the import path as needed
+import ClothesIndex from './ClothesIndex';
 
 function Wardrobe() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,13 +59,13 @@ function Wardrobe() {
         <ClothesForm initialValues={initialValues} isOpen={isModalOpen} onClose={closeModal} />
       )}
 
-
-      <button
+        <ClothesIndex />
+      {/* <button
         onClick={() => setIsCameraOpen(true)}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition ml-4"
       >
         Open Camera
-      </button>
+      </button> */}
 
       {isCameraOpen && (
         <OpenCamera
