@@ -54,6 +54,7 @@ function App() {
 
   return (
     <div>
+      <Header/>
       <Routes>
         <Route path="/" element={user ? <Navigate to="/profile" /> : <Login />} />
         <Route path="/login" element={<Login />} />
@@ -80,6 +81,7 @@ function App() {
         <Route path="/wardrobe" element={<Wardrobe />} />
         <Route path="/getlocation" element={<GetLocation />} />
       </Routes>
+      {/* <Footer/> */}
       <ToastContainer />
     </div>
   );
