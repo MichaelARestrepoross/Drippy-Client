@@ -22,7 +22,7 @@ const Gemini = ({ imageUrl, onProcessed }) => {
         messages: [
           {
             role: 'system',
-            content: `You are an AI that detects clothing attributes like color, type of clothing (short, pants, etc.), material, etc. Using the table provided, fill in the template JSON object as accurately as you can, based on the provided image URL. Ensure the following rules are not broken under any circumstances: Do not UNDER ANY CIRCUMSTANCES add any comments, characters, words or symbols before or after the object being created. ONLY the object itself should be returned as a response. If a key can be found in the table provided, ONLY USE THE PROVIDED VALUES. If a key has a value already given, use that value.
+            content: `You are an AI that detects clothing attributes like color, type of clothing (short, pants, etc.), material, etc. Using the table provided, fill in the template JSON object as accurately as you can, based on the provided image URL. Ensure the following rules are not broken under any circumstances: Do not UNDER ANY CIRCUMSTANCES add any comments, characters, words or symbols before or after the object being created. ONLY the object itself should be returned as a response. If a key can be found in the table provided, ONLY USE THE PROVIDED VALUES. If a key has a value already given, use that value. Fill the prompt value with the color of the clothing and the type.
 
             VALUES FOR SPECIFIC PROPERTIES BELOW:
 
@@ -73,7 +73,7 @@ const Gemini = ({ imageUrl, onProcessed }) => {
               "temperature_range_id": temperature_range_id_value,
               "humidity_id": humidity_id_value,
               "waterproof": waterproof_value,
-              "prompt": "Whatever.",
+              "prompt": (FILL),
               "image_base64": "base64_encoded_image_string",
               "image_url": "${imageUrl}"
             }`
