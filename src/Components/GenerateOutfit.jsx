@@ -54,7 +54,6 @@ const GenerateOutfit = () => {
 
         const data = await response.json();
         setClothes(data);
-        await callChatGPT(data); // Call the AI function with fetched clothes data
       } catch (error) {
         console.error('Fetch error:', error);
         toast.error(error.message, { position: 'bottom-center' });
@@ -108,9 +107,10 @@ const GenerateOutfit = () => {
     const selectedId = e.target.value;
     const selectedLocation = locations.find(location => location.location_id === parseInt(selectedId));
     setSelectedLocation(selectedLocation);
+    callChatGPT(clothes, selectedWeatherData)
   };
 
-  const callChatGPT = async (clothingData) => {
+  const callChatGPT = async (clothingData, weatherData) => {
     setLoading(true);
     setError('');
 
@@ -120,7 +120,7 @@ const GenerateOutfit = () => {
         messages: [
           {
             role: 'system',
-            content: 'Create an array of IDs for the articles of clothing best suited to create ONE outfit based on the current weather in Miami, Florida, using the provided data. Only use ONE top and bottom (One shirt, one pair of pants/shorts), and one pair of footwear for a single outfit IF AVAILABLE. The array should have the clothing IDs in order from head to toe. I cannot stress this enough, DO NOT RESPOND WITH ANYTHING OTHER THAN THE CREATED ARRAY IN HEAD-TO-TOE ORDER. YOUR RESPONSE SHOULD HAVE NO LETTERS, ONLY NUMBERS AND CHARACTERS:'
+            content: `Create an array of IDs for the articles of clothing best suited to create ONE outfit based on the following weather data: ${weatherData}. Only use ONE top and bottom (One shirt, one pair of pants/shorts), and one pair of footwear for a single outfit IF AVAILABLE. The array should have the clothing IDs in order from head to toe. I cannot stress this enough, DO NOT RESPOND WITH ANYTHING OTHER THAN THE CREATED ARRAY IN HEAD-TO-TOE ORDER. YOUR RESPONSE SHOULD HAVE NO LETTERS, ONLY NUMBERS AND CHARACTERS:`
           },
           {
             role: 'user',

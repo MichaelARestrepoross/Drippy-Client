@@ -24,7 +24,7 @@ const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }
               const filteredData = {
                 time: new Date(currentMinuteData.time).getTime(),
                 formattedTime: new Date(currentMinuteData.time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
-                temperature: currentMinuteData.values.temperature,
+                temperature: (currentMinuteData.values.temperature * 9/5) + 32,
                 precipitationProbability: currentMinuteData.values.precipitationProbability,
                 humidity: currentMinuteData.values.humidity
               };
@@ -57,7 +57,7 @@ const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }
           {weatherData.map((weather, index) => (
             <div key={index}>
               <p>Date and Time: {weather.formattedTime}</p>
-              <p>Temperature: {weather.temperature} °C</p>
+              <p>Temperature: {weather.temperature} °F</p>
               <p>Precipitation Probability: {weather.precipitationProbability} %</p>
               <p>Humidity: {weather.humidity} %</p>
               <hr />
