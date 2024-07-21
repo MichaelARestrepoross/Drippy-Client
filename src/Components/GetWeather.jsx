@@ -5,45 +5,48 @@ const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }
   const [error, setError] = useState(null);
   const TOMORROW_IO_API_KEY = import.meta.env.VITE_TOMORROW_IO_API_KEY;
 
-  const targetHours = [8, 14, 19]
-
   useEffect(() => {
     if (coordinates) {
       const fetchWeather = async () => {
         try {
-          const response = await fetch(`https://api.tomorrow.io/v4/weather/forecast?location=${coordinates.lat},${coordinates.lng}&apikey=${TOMORROW_IO_API_KEY}`);
-          const data = await response.json()
-          console.log('Fetched weather data:', data)
+          const response = await fetch(`https://api.tomorrow.io/v4/weather/forecast?location=${coordinates.lat},${coordinates.lng}&timesteps=1m&apikey=${TOMORROW_IO_API_KEY}`);
+          const data = await response.json();
+          
+          if (data.timelines && data.timelines.minutely && data.timelines.minutely.length > 0) {
+            const minutelyData = data.timelines.minutely;
+            const currentMinute = new Date().getMinutes();
+            const currentMinuteData = minutelyData.find(minute => {
+              const minuteTime = new Date(minute.time).getMinutes();
+              return minuteTime === currentMinute;
+            });
 
-          if (data.timelines && data.timelines.hourly && data.timelines.hourly.length > 0) {
-            const hourlyData = data.timelines.hourly
-            const filteredData = hourlyData.filter(hour => {
-              const hourTime = new Date(hour.time).getHours()
-              return targetHours.includes(hourTime)
-            }).map(hour => ({
-              time: new Date(hour.time).getTime(),
-              formattedTime: new Date(hour.time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
-              temperature: hour.values.temperature,
-              precipitationProbability: hour.values.precipitationProbability,
-              humidity: hour.values.humidity
-            }));
+            if (currentMinuteData) {
+              const filteredData = {
+                time: new Date(currentMinuteData.time).getTime(),
+                formattedTime: new Date(currentMinuteData.time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
+                temperature: currentMinuteData.values.temperature,
+                precipitationProbability: currentMinuteData.values.precipitationProbability,
+                humidity: currentMinuteData.values.humidity
+              };
 
-            setWeatherData(filteredData)
-            setSelectedWeatherData(filteredData)
+              setWeatherData([filteredData]);
+              setSelectedWeatherData([filteredData]);
+              console.log(filteredData);
+            } else {
+              setError('No data available for the current minute');
+            }
           } else {
-            setError('Unexpected data format')
+            setError('Unexpected data format');
           }
         } catch (error) {
-          console.error('Error fetching weather data:', error)
-          setError('Error fetching weather data')
+          console.error('Error fetching weather data:', error);
+          setError('Error fetching weather data');
         }
-      }
+      };
 
-      fetchWeather()
+      fetchWeather();
     }
-  }, [])
-
-  const selectedWeather = weatherData
+  }, []);
 
   return (
     <div>
