@@ -41,7 +41,7 @@ const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }
 
       fetchWeather()
     }
-  }, [coordinates, TOMORROW_IO_API_KEY])
+  }, [])
 
   const selectedWeather = weatherData
 
