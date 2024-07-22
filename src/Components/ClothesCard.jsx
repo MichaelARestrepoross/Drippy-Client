@@ -7,7 +7,7 @@ const ClothesCard = ({ id, image_base64, image_url, prompt, color, type_name, ma
     <div className="bg-white rounded-lg overflow-hidden shadow-lg">
       <img src={imageUrl} alt={prompt} className="h-64 w-full object-cover" />
       <div className="p-4">
-        <h3 className="text-xl font-bold mb-2 text-purple-700">{prompt}</h3>
+        <h3 className="text-xl font-bold mb-2 text-purple-700">{color} {type_name}</h3>
         <p className="text-gray-600 mb-2">Color: {color}</p>
         <p className="text-gray-600 mb-2">Type: {type_name}</p>
         <p className="text-gray-600 mb-2">Material: {material_name}</p>
