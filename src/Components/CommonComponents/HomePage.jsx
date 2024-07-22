@@ -18,12 +18,12 @@ function HomePage() {
         >
           Go to Wardrobe
         </button>
-        {/* <button 
-          onClick={() => handleNavigation('/wardrobe')}
+        <button 
+          onClick={() => handleNavigation('/getlocation')}
           className="w-64 py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300"
         >
-          Add Clothes
-        </button> */}
+          Add Location
+        </button>
         <button 
           onClick={() => handleNavigation('/generateoutfit')}
           className="w-64 py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300"
