@@ -11,6 +11,7 @@ function Wardrobe() {
   const [urlInput, setUrlInput] = useState('');
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [base64Image, setBase64Image] = useState('');
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -32,6 +33,12 @@ function Wardrobe() {
       link.download = 'captured-image.png'; // Name of the file
       link.click(); // Trigger a click to start the download
     }
+  };
+
+  const handleCapturedImage = (image) => {
+    setCapturedImage(image);
+    const base64Data = image.split(',')[1];
+    setBase64Image(base64Data);
   };
 
   return (
@@ -59,34 +66,33 @@ function Wardrobe() {
         <ClothesForm initialValues={initialValues} isOpen={isModalOpen} onClose={closeModal} />
       )}
 
-        <ClothesIndex />
-      {/* <button
+      <button
         onClick={() => setIsCameraOpen(true)}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition ml-4"
       >
         Open Camera
-      </button> */}
+      </button>
 
       {isCameraOpen && (
         <OpenCamera
           isCameraOpen={isCameraOpen}
           setIsCameraOpen={setIsCameraOpen}
-          setCapturedImage={setCapturedImage}
+          setCapturedImage={handleCapturedImage}
         />
       )}
 
       {capturedImage && (
         <div className="mt-4">
-          <h2 className="text-xl font-bold mb-2">Captured Image:</h2>
-          <img src={capturedImage} alt="Captured" className="w-full max-w-md" />
+          <img src={capturedImage} alt="Captured" className="mb-4 max-w-md" />
           <button
             onClick={downloadImage}
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-2"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
           >
             Download Image
           </button>
         </div>
       )}
+      <ClothesIndex />
     </div>
   );
 }
