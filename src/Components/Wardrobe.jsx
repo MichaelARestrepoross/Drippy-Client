@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ClothesForm from './ClothesForm'; // Adjust the import path as needed
-import Gemini from './Gemini'; // Adjust the import path as needed
-import OpenCamera from './OpenCamera'; // Adjust the import path as needed
+import ClothesForm from './ClothesForm'; 
+import Gemini from './Gemini'; 
+import OpenCamera from './OpenCamera'; 
 import ClothesIndex from './ClothesIndex';
 
 function Wardrobe() {
