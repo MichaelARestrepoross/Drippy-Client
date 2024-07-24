@@ -78,6 +78,11 @@ const ClothesIndex = () => {
       <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
 
       <div className="flex justify-center mb-6 flex-wrap gap-4">
+        <FilterBox
+          type="None"
+          onClick={() => handleFilterClick(null)}
+          className="bg-gray-200 text-gray-700"
+        />
         {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
           <FilterBox
             key={type}
