@@ -42,7 +42,7 @@ function Wardrobe() {
   };
 
   return (
-    <div className="p-6">
+    <div className="pr-6 pl-0">
       <h1 className="text-2xl font-bold mb-4">Wardrobe</h1>
 
       <form onSubmit={handleUrlSubmit} className="mb-4">
