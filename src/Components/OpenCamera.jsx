@@ -1,16 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-function OpenCamera() {
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
+function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
   const [currentCameraId, setCurrentCameraId] = useState(null);
   const [cameraDevices, setCameraDevices] = useState([]);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const mediaStreamRef = useRef(null); // Ref to store the media stream
+  const nextCameraIdRef = useRef(null); // Ref to store the next camera ID
 
-  // Function to get the list of video input devices
   const getVideoDevices = async () => {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -24,7 +22,6 @@ function OpenCamera() {
     }
   };
 
-  // Function to open the camera with a specific device ID
   const openCamera = async (deviceId) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
@@ -35,14 +32,12 @@ function OpenCamera() {
           videoRef.current.play();
         };
       }
-      setIsCameraOpen(true);
       console.log('Camera opened');
     } catch (error) {
       console.error('Error accessing the camera:', error);
     }
   };
 
-  // Function to stop all tracks of a media stream
   const stopStreamTracks = (stream) => {
     if (stream) {
       const tracks = stream.getTracks();
@@ -53,7 +48,6 @@ function OpenCamera() {
     }
   };
 
-  // Function to close the camera
   const closeCamera = () => {
     if (mediaStreamRef.current) {
       stopStreamTracks(mediaStreamRef.current); // Stop all tracks
@@ -63,11 +57,8 @@ function OpenCamera() {
       }
       console.log('Camera stream cleared');
     }
-    setIsCameraOpen(false);
-    console.log('Camera closed');
   };
 
-  // Function to take a picture and automatically close the camera
   const takePicture = () => {
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
@@ -79,48 +70,51 @@ function OpenCamera() {
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         
-        // Convert canvas to data URL
         const dataUrl = canvas.toDataURL('image/png');
         setCapturedImage(dataUrl);
         console.log('Captured image:', dataUrl);
         
-        // Close the camera after taking the picture
         closeCamera();
+        setIsCameraOpen(false); // Close the modal after taking the picture
       } else {
         console.log('Video dimensions not available yet.');
       }
     }
   };
 
-  // Function to switch the camera
   const switchCamera = async () => {
     if (cameraDevices.length > 0) {
       const currentIndex = cameraDevices.findIndex(device => device.deviceId === currentCameraId);
       const nextIndex = (currentIndex + 1) % cameraDevices.length;
       const nextCameraId = cameraDevices[nextIndex].deviceId;
-      setCurrentCameraId(nextCameraId);
+      nextCameraIdRef.current = nextCameraId;
       closeCamera(); // Close the current camera
-      await openCamera(nextCameraId); // Open the next camera
+      setCurrentCameraId(nextCameraId); // Update the camera ID to the next one
     }
   };
 
   useEffect(() => {
-    // Get video devices and open the camera when component mounts
     const initializeCamera = async () => {
       await getVideoDevices();
-      if (currentCameraId) {
-        openCamera(currentCameraId);
-      }
     };
-    initializeCamera();
+
+    if (isCameraOpen) {
+      initializeCamera();
+    } else {
+      closeCamera();
+    }
 
     return () => {
-      // Cleanup media stream when component unmounts
       closeCamera(); // Ensure camera is closed on unmount
     };
+  }, [isCameraOpen]);
+
+  useEffect(() => {
+    if (currentCameraId) {
+      openCamera(currentCameraId);
+    }
   }, [currentCameraId]);
 
-  // Modal component
   const Modal = ({ children, onClose }) => {
     return ReactDOM.createPortal(
       <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
@@ -152,8 +146,8 @@ function OpenCamera() {
                 Take Picture
               </button>
               <button 
-                onClick={closeCamera}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition ml-4"
+                onClick={() => setIsCameraOpen(false)}
+                className="bg-red-500 text-white px-10 py-2 rounded hover:bg-red-600 transition ml-4"
               >
                 Close Camera
               </button>
@@ -166,16 +160,6 @@ function OpenCamera() {
             </div>
           </div>
         </Modal>
-      )}
-
-      {capturedImage && (
-        <div className="mt-4">
-          <h2 className="text-xl font-bold mb-2">Captured Image:</h2>
-          <img src={capturedImage} alt="Captured" className="w-full max-w-md" />
-          <a href={capturedImage} download="captured-image.png" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-2">
-            Download Image
-          </a>
-        </div>
       )}
       <canvas ref={canvasRef} className="hidden"></canvas>
     </div>
