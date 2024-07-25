@@ -88,12 +88,14 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
   };
 
   const switchCamera = async () => {
-    if (cameraDevices.length > 0) {
+    if (cameraDevices.length > 1) { // Check if there is more than one camera device
       const currentIndex = cameraDevices.findIndex(device => device.deviceId === currentCameraId);
       const nextIndex = (currentIndex + 1) % cameraDevices.length;
       const nextCameraId = cameraDevices[nextIndex].deviceId;
       await closeCamera(); // Ensure the current camera is closed before switching
       setCurrentCameraId(nextCameraId); // Update the camera ID to the next one
+    } else {
+      console.log('No additional camera devices available.');
     }
   };
 
