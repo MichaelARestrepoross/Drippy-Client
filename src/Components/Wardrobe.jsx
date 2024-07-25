@@ -4,6 +4,9 @@ import Gemini from './Gemini';
 import OpenCamera from './OpenCamera'; 
 import ClothesIndex from './ClothesIndex';
 
+const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Make sure these are set in your environment
+const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
 function Wardrobe() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
@@ -12,6 +15,7 @@ function Wardrobe() {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [base64Image, setBase64Image] = useState('');
+  const [cloudinaryUrl, setCloudinaryUrl] = useState(''); // Store the URL returned from Cloudinary
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -39,7 +43,34 @@ function Wardrobe() {
     setCapturedImage(image);
     const base64Data = image.split(',')[1];
     setBase64Image(base64Data);
+    uploadToCloudinary(base64Data);
   };
+
+  const uploadToCloudinary = async (base64Data) => {
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+    const formData = new FormData();
+    formData.append('file', `data:image/jpeg;base64,${base64Data}`);
+    formData.append('upload_preset', uploadPreset);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCloudinaryUrl(data.secure_url); // Save the URL in state
+        console.log("Uploaded Image URL:", data.secure_url); // Log the URL to the console
+        return data.secure_url; // Return the URL
+      } else {
+        throw new Error(`Failed to upload image: ${data.error ? data.error.message : "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      return null; // Return null in case of error
+    }
+  };
+
 
   return (
     <div className="pr-6 pl-0">
@@ -90,6 +121,11 @@ function Wardrobe() {
           >
             Download Image
           </button>
+          {cloudinaryUrl && (
+            <div>
+              <a href={cloudinaryUrl} target="_blank" rel="noopener noreferrer">View on Cloudinary</a>
+            </div>
+          )}
         </div>
       )}
       <ClothesIndex />
