@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClothesForm from './ClothesForm'; 
 import Gemini from './Gemini'; 
 import OpenCamera from './OpenCamera'; 
@@ -17,8 +17,25 @@ function Wardrobe() {
   const [base64Image, setBase64Image] = useState('');
   const [cloudinaryUrl, setCloudinaryUrl] = useState(''); // Store the URL returned from Cloudinary
 
+  // Added useEffect to monitor cloudinaryUrl and open modal automatically
+  useEffect(() => {
+    if (cloudinaryUrl) {
+      setImageUrl(cloudinaryUrl);
+      openModal();
+    }
+  }, [cloudinaryUrl]);
+
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Reset form data when closing the modal
+    setImageUrl('');
+    setUrlInput('');
+    setInitialValues(null);
+    setCapturedImage(null);
+    setCloudinaryUrl('');
+  };
 
   const handleUrlSubmit = (e) => {
     e.preventDefault();
