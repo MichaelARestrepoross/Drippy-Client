@@ -45,47 +45,24 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
     }
   };
 
-  const stopStreamTracks = (stream) => {
-    if (stream) {
-      const tracks = stream.getTracks();
-      tracks.forEach(track => {
-        if (track.readyState === 'live') {
-          track.stop(); // Stop each track
-          console.log('Stopped track:', track);
-        }
-      });
+  const stopStreamTracks = () => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      console.log('All tracks stopped');
     }
   };
 
   const closeCamera = async () => {
-    if (mediaStreamRef.current) {
-      // Stop all tracks of the current media stream
-      mediaStreamRef.current.getTracks().forEach(track => {
-        if (track.readyState === 'live') {
-          track.stop(); // Stop each track
-          console.log('Stopped track:', track);
-        }
-      });
-      
-      // Clear the video source
-      if (videoRef.current) {
-        videoRef.current.srcObject = null; // Clear the video source
-        videoRef.current.pause(); // Explicitly pause the video
-        videoRef.current.removeAttribute('src'); // Remove the src attribute
-        videoRef.current.load(); // Reload the video element
-      }
-      
-      mediaStreamRef.current = null; // Clear the media stream ref
-      console.log('Camera stream cleared');
-      
-      // Optionally, wait a short time to ensure the stream is fully closed
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Reinitialize media devices
-      await navigator.mediaDevices.enumerateDevices();
+    stopStreamTracks(); // Stop all tracks
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+      videoRef.current.pause();
+      videoRef.current.load();
     }
+    mediaStreamRef.current = null;
+    console.log('Camera closed');
+    await new Promise(resolve => setTimeout(resolve, 500));
   };
-  
 
   const takePicture = () => {
     if (videoRef.current && canvasRef.current) {
@@ -121,19 +98,14 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
   };
 
   useEffect(() => {
-    const initializeCamera = async () => {
-      await getVideoDevices();
-    };
-
     if (isCameraOpen) {
-      initializeCamera();
+      getVideoDevices();
     } else {
       closeCamera();
     }
-
-    return () => {
-      closeCamera(); // Ensure camera is closed on unmount
-    };
+  
+    // Cleanup function to ensure camera is closed when component unmounts or camera state changes
+    return () => closeCamera();
   }, [isCameraOpen]);
 
   useEffect(() => {
@@ -181,8 +153,10 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
                   >
                     Take Picture
                   </button>
-                  <button 
-                    onClick={() => setIsCameraOpen(false)}
+                  <button onClick={() => {
+                    setIsCameraOpen(false);
+                    closeCamera();
+                    }}
                     className="bg-red-500 text-white px-10 py-2 rounded hover:bg-red-600 transition ml-4"
                   >
                     Close Camera
