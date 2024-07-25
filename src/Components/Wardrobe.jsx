@@ -61,6 +61,7 @@ function Wardrobe() {
       if (response.ok) {
         setCloudinaryUrl(data.secure_url); // Save the URL in state
         console.log("Uploaded Image URL:", data.secure_url); // Log the URL to the console
+        setUrlInput(data.secure_url)
         return data.secure_url; // Return the URL
       } else {
         throw new Error(`Failed to upload image: ${data.error ? data.error.message : "Unknown error"}`);
