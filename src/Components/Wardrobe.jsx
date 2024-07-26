@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClothesForm from './ClothesForm'; 
 import Gemini from './Gemini'; 
 import OpenCamera from './OpenCamera'; 
@@ -17,8 +17,25 @@ function Wardrobe() {
   const [base64Image, setBase64Image] = useState('');
   const [cloudinaryUrl, setCloudinaryUrl] = useState(''); // Store the URL returned from Cloudinary
 
+  // Added useEffect to monitor cloudinaryUrl and open modal automatically
+  useEffect(() => {
+    if (cloudinaryUrl) {
+      setImageUrl(cloudinaryUrl);
+      openModal();
+    }
+  }, [cloudinaryUrl]);
+
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Reset form data when closing the modal
+    setImageUrl('');
+    setUrlInput('');
+    setInitialValues(null);
+    setCapturedImage(null);
+    setCloudinaryUrl('');
+  };
 
   const handleUrlSubmit = (e) => {
     e.preventDefault();
@@ -61,6 +78,7 @@ function Wardrobe() {
       if (response.ok) {
         setCloudinaryUrl(data.secure_url); // Save the URL in state
         console.log("Uploaded Image URL:", data.secure_url); // Log the URL to the console
+        setUrlInput(data.secure_url)
         return data.secure_url; // Return the URL
       } else {
         throw new Error(`Failed to upload image: ${data.error ? data.error.message : "Unknown error"}`);
