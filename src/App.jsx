@@ -26,6 +26,7 @@ import OpenCamera from './Components/OpenCamera';
 import UploadImage from './Components/UploadImage';
 import Wardrobe from './Components/Wardrobe';
 import GetLocation from './Components/GetLocation';
+import ImageHandler from './Components/ImageHandler';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -80,6 +81,7 @@ function App() {
         <Route path="/uploadimage" element={<UploadImage />} />
         <Route path="/wardrobe" element={user ? <Wardrobe />: <Login />} />
         <Route path="/getlocation" element={<GetLocation />} />
+        <Route path="/addclothing" element={user ? <ImageHandler />: <Login />} />
       </Routes>
       {/* <Footer/> */}
       <ToastContainer />
