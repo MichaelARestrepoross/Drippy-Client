@@ -16,6 +16,9 @@ const Header = () => {
   const handleNavigateLanding = () => {
     navigate('/landingpage');
   };
+  const handleNavigateProfile = () => {
+    navigate('/profile');
+  };
 
 
   return (
@@ -33,11 +36,11 @@ const Header = () => {
             <span className="icon-placeholder-home mr-2">🏠</span>
           </button>
           <button
-            onClick={handleNavigateWardrobe}
+            onClick={handleNavigateProfile}
             className="flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
           >
-            <span>My Wardrobe</span>
-            <span className="icon-placeholder-clothing mr-2">👕</span>
+            <span>My Profile</span>
+            <span className="icon-placeholder-clothing mr-2">👤</span>
           </button>
         </div>
       </div>
