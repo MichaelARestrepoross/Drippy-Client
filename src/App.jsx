@@ -25,7 +25,6 @@ import GptGenerator from './Components/GptGenerator';
 import OpenCamera from './Components/OpenCamera';
 import UploadImage from './Components/UploadImage';
 import Wardrobe from './Components/Wardrobe';
-import GetLocation from './Components/GetLocation';
 import ImageHandler from './Components/ImageHandler';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -71,16 +70,13 @@ function App() {
         <Route path="/signinwithgoogle" element={<SignInWithGoogle />} />
 
         {/* Other Components */}
-        <Route path="/clothescard" element={<ClothesCard />} />
         <Route path="/clothesform" element={<ClothesForm />} />
-        <Route path="/clothesindex" element={user ?<ClothesIndex />:<Login />} />
         <Route path="/gemini" element={<Gemini />} />
         <Route path="/generateoutfit" element={ user ? <GenerateOutfit />:<Login />} />
         <Route path="/gptgenerator" element={<GptGenerator />} />
         <Route path="/opencamera" element={<OpenCamera />} />
         <Route path="/uploadimage" element={<UploadImage />} />
         <Route path="/wardrobe" element={user ? <Wardrobe />: <Login />} />
-        <Route path="/getlocation" element={<GetLocation />} />
         <Route path="/addclothing" element={user ? <ImageHandler />: <Login />} />
       </Routes>
       {/* <Footer/> */}
