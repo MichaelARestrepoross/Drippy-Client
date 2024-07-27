@@ -107,46 +107,50 @@ function ImageHandler() {
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-bold text-center mb-4">Add Clothes</h1>
-      <form onSubmit={handleUrlSubmit} className="mb-4 text-center">
-        <input
-          type="text"
-          value={urlInput}
-          onChange={(e) => setUrlInput(e.target.value)}
-          placeholder="Enter image URL"
-          className="border p-2 rounded mr-2"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-        >
-          Add New Clothes
-        </button>
+    <div className="container mx-auto px-4 py-6 bg-white shadow-lg rounded-lg max-w-md">
+      <h1 className="text-2xl font-bold text-center mb-6">Add Clothes</h1>
+      
+      <form onSubmit={handleUrlSubmit} className="mb-6">
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            placeholder="Enter image URL"
+            className="border border-gray-300 p-3 rounded-md w-full"
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          >
+            Add New Clothes
+          </button>
+        </div>
       </form>
 
-      <div className="text-center mb-4">
+      <div className="text-center mb-6">
         <input
           type="file"
           accept="image/jpeg,image/png"
           onChange={handleFileSelect}
-          className="block mx-auto mb-2"
+          className="block mx-auto mb-3 border border-gray-300 p-3 rounded-md w-full"
         />
         <button
           onClick={() => setIsCameraOpen(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition w-full"
         >
           Open Camera
         </button>
       </div>
 
       {imageUrl && <Gemini imageUrl={imageUrl} onProcessed={handleProcessedData} />}
+      
       {isModalOpen && initialValues && (
         <ClothesForm initialValues={initialValues} isOpen={isModalOpen} onClose={closeModal} />
       )}
 
       {isLoading && (
-        <div className="flex justify-center items-center mt-4">
+        <div className="flex justify-center items-center mt-6">
           <ClipLoader color="#4A90E2" size={50} />
         </div>
       )}
@@ -160,25 +164,26 @@ function ImageHandler() {
       )}
 
       {capturedImage && (
-        <div className="text-center mt-4">
-          <img src={capturedImage} alt="Captured" className="mb-4 mx-auto max-w-md" />
+        <div className="text-center mt-6">
+          <img src={capturedImage} alt="Captured" className="mb-4 mx-auto max-w-full border border-gray-300 rounded-md" />
           <button
             onClick={downloadImage}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition w-full"
           >
             Download Image
           </button>
           {cloudinaryUrl && (
-            <div>
-              <a href={cloudinaryUrl} target="_blank" rel="noopener noreferrer">View on Cloudinary</a>
+            <div className="mt-3">
+              <a href={cloudinaryUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View on Cloudinary</a>
             </div>
           )}
         </div>
       )}
-      <div className="text-center mt-4">
+      
+      <div className="text-center mt-6">
         <button
           onClick={() => navigate('/wardrobe')}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+          className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition w-full"
         >
           Go to Wardrobe
         </button>
@@ -186,5 +191,4 @@ function ImageHandler() {
     </div>
   );
 }
-
 export default ImageHandler;
