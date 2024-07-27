@@ -6,15 +6,17 @@ import { getUserData } from '../../helpers/getUserData'
 import { logout } from '../../helpers/logout'
 
 import placeholderImage from '../../assets/placeholder.png'
+import GetLocation from '../GetLocation'
 
 function Profile() {
   const navigate = useNavigate()
 
   const [userDetails, setUserDetails] = useState(null)
+  const [showAddLocation, setShowAddLocation] = useState(false)
 
   async function handleLogout() {
     try {
-      //call function to log out of firebase, no need to call backend
+      // Call function to log out of firebase, no need to call backend
       await logout()
       toast.success('User logged out successfully!', {
         position: 'top-center',
@@ -32,7 +34,7 @@ function Profile() {
 
   useEffect(() => {
     async function getUser() {
-      // this is a helper function that will check the state of the current user in firebase and fetch the user using the JWT token from localstorage and the uid
+      // This is a helper function that will check the state of the current user in firebase and fetch the user using the JWT token from localstorage and the uid
       const user = await getUserData()
 
       if (user) setUserDetails(user)
@@ -40,6 +42,10 @@ function Profile() {
 
     getUser()
   }, [])
+
+  const toggleAddLocation = () => {
+    setShowAddLocation(!showAddLocation)
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
@@ -59,6 +65,26 @@ function Profile() {
               <p className="text-gray-700 mb-4"><span className="font-semibold">Email:</span> {userDetails.email}</p>
               <p className="text-gray-700 mb-4"><span className="font-semibold">Username:</span> {userDetails.username}</p>
             </div>
+
+            <button
+              onClick={() => navigate('/wardrobe')}
+              className="w-full py-3 px-6 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mb-4"
+            >
+              Go to Wardrobe
+            </button>
+
+            {showAddLocation && (
+              <div className="bg-gray-100 shadow-inner rounded-lg p-4 mb-4">
+                <GetLocation />
+              </div>
+            )}
+
+            <button
+              onClick={toggleAddLocation}
+              className="w-full py-3 px-6 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 mb-4"
+            >
+              {showAddLocation ? 'Close Add Location' : 'Add a Location'}
+            </button>
 
             <button
               onClick={handleLogout}
@@ -82,6 +108,5 @@ function Profile() {
     </div>
   )
 }
-
 
 export default Profile
