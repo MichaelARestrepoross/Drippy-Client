@@ -13,15 +13,15 @@ const openai = new OpenAI({
 
 const GenerateOutfit = (currentWeather) => {
   const [clothes, setClothes] = useState([]);
-  const [extractedClothesData, setExtractedClothesData] = useState([]);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
   const [outfit, setOutfit] = useState([]);
   const [error, setError] = useState('');
   const [selectedWeatherData, setSelectedWeatherData] = useState(null);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedOccasion, setSelectedOccasion] = useState('');
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -53,26 +53,13 @@ const GenerateOutfit = (currentWeather) => {
 
         const data = await response.json();
         setClothes(data);
-        setExtractedClothesData(extractFields(data));
+        console.log('Fetched clothes:', data);
       } catch (error) {
         console.error('Fetch error:', error);
         toast.error(error.message, { position: 'bottom-center' });
       } finally {
         setLoading(false);
       }
-    };
-
-    const extractFields = (data) => {
-      return data.map(item => ({
-        clothes_id: item.clothes_id,
-        user_id: item.user_id,
-        color: item.color,
-        type_id: item.type_id,
-        material_id: item.material_id,
-        temperature_range_id: item.temperature_range_id,
-        humidity_id: item.humidity_id,
-        waterproof: item.waterproof
-      }));
     };
 
     const fetchLocations = async () => {
@@ -117,13 +104,41 @@ const GenerateOutfit = (currentWeather) => {
     fetchClothes();
   }, []);
 
-  const userContent = `Weather Data: ${JSON.stringify(selectedWeatherData)}\nClothing Data: ${JSON.stringify(extractedClothesData)}`;
-
   const handleLocationChange = (e) => {
     const selectedId = e.target.value;
     const selectedLocation = locations.find(location => location.location_id === parseInt(selectedId));
     setSelectedLocation(selectedLocation);
-    callChatGPT(userContent);
+  };
+
+  const handleOccasionChange = (e) => {
+    const selectedOccasion = e.target.value;
+    setSelectedOccasion(selectedOccasion);
+
+    // Filter clothes based on the selected occasion
+    const filteredOccasion = clothes.filter(item => item.prompt === selectedOccasion);
+
+    // Check if weather data is available to further filter the clothes
+    if (selectedWeatherData) {
+      const climateFilter = (clothes, weather) => {
+        const filtered = clothes.filter(item => {
+          const tempMatch = item.min_temp <= weather.temperature && weather.temperature <= item.max_temp;
+          const humidityMatch = item.min_humidity <= weather.humidity && weather.humidity <= item.max_humidity;
+          const adjustedHumidityMatch = weather.humidity > item.max_humidity ? true : humidityMatch;
+          return tempMatch && adjustedHumidityMatch;
+        });
+        return filtered;
+      };
+
+      const filteredClothes = climateFilter(filteredOccasion, selectedWeatherData[0]); // Access the first element of selectedWeatherData
+
+      // Call ChatGPT with the filtered data
+      const userContent = `Clothing Data: ${JSON.stringify(filteredClothes)}`;
+      callChatGPT(userContent);
+    } else {
+      // If no weather data, call ChatGPT with occasion filtered data only
+      const userContent = `Clothing Data: ${JSON.stringify(filteredOccasion)}`;
+      callChatGPT(userContent);
+    }
   };
 
   const callChatGPT = async (content) => {
@@ -136,47 +151,42 @@ const GenerateOutfit = (currentWeather) => {
         messages: [
           {
             role: 'system',
-            content: `Each article of clothing is its own object, represented by "clothing_id". Create an array of IDs for the articles of clothing in the Clothing Data best suited to create ONE outfit based on the temperature and humidity in the provided Weather Data. Make sure the clothing selected falls within the range of the minimum and maximum humidity and temperature values. After analyzing the clothing data and taking the weather data into account, appropriately make one outfit using the IDs. One shirt/sweater, one pair of pants/shorts, one pair of shoes. Ensure the following rule is not broken under any circumstance: DO NOT ADD TWO TYPES OF EACH CLOTHING. For example, don't add a pair of shorts and pants, two pairs of shoes, a shirt and a sweater, etc. The array should have the clothing IDs in order from head to toe. I cannot stress this enough, DO NOT RESPOND WITH ANYTHING OTHER THAN THE CREATED ARRAY IN HEAD-TO-TOE ORDER. YOUR RESPONSE SHOULD HAVE NO LETTERS, ONLY NUMBERS AND CHARACTERS. Use the table below to know what the values in each element of the array mean:
+            content: `You are a machine that only responds with arrays. You cannot use text in your response FOR ANY REASON WHAT SO EVER.
+
+            Goal: Create one outfit from the Clothing Data using the "clothing_id". Each outfit is represented by an array of clothing IDs.
+
+            THE FOLLOWING RULES CANNOT BE BROKEN UNDER ANY CIRCUMSTANCE, ELSE YOU WILL CREATE A CRITICAL ERROR
+
+            EXTREMELY IMPORTANT RULES:
             
-            VALUES FOR SPECIFIC PROPERTIES BELOW:
-
-            -START OF TABLE-
-            "type_id" values:
-            1: T-shirt
-            2: Jacket
-            3: Sweater
-            4: Shorts
-            5: Pants
-            6: Tank-Top
-            7: Sandals
-            8: Sneakers
-            9: Boots
-            10: Heels
-
-            "material_id" values:
-            1: Cotton
-            2: Polyester
-            3: Wool
-            4: Silk
-            5: Denim
-            6: Leather
-            7: Latex
-            8: Rubber
-            9: Canvas
-
-            "temperature_range_id" values:
-            1: Very Cold (-50 to 0)
-            2: Cold (1 to 50)
-            3: Mild (51 to 70)
-            4: Warm (71 to 140)
-
-            "humidity_id" values:
-            1: Very Low (0 to 20)
-            2: Low (21 to 40)
-            3: Medium (41 to 60)
-            4: High (61 to 80)
-            5: Very High (81 to 100)
-            -END OF TABLE-`
+            No Overlapping or repeating "type_name":
+            If adding an ID for pants, do not add an ID for shorts. If adding an ID for shorts, do not add an ID for pants.
+            If adding an ID for a shirt, do not add an ID for a sweater. If adding an ID for a sweater, do not add an ID for a shirt.
+            If adding an ID for shoes, do not add an ID for sandals. If adding an ID for sandals, do not add an ID for shoes.
+            If adding an ID for a T-shirt, do not add an ID for a tank-top. If adding an ID for a tank-top, do not add an ID for a T-shirt.
+            If adding an ID for a T-shirt, do not add an ID for a sweater. If adding an ID for a sweater, do not add an ID for a T-shirt.
+            If adding an ID for a tank-top, do not add an ID for a sweater. If adding an ID for a sweater, do not add an ID for a tank-top.
+            If adding an ID for pants, do not add an ID for another pair of pants.
+            If adding an ID for shoes, do not add an ID for another pair of shoes.
+            If adding an ID for a sweater, do not add an ID for another sweater.
+            If adding an ID for a T-shirt, do not add an ID for another T-shirt.
+            If adding an ID for shorts, do not add an ID for another pair of shorts.
+            If adding an ID for sandals, do not add an ID for another pair of sandals.
+            If adding an ID for a skirt, do not add an ID for another skirt.
+            If adding an ID for sneakers, do not add an ID for another pair of sneakers.
+            If adding an ID for boots, do not add an ID for another pair of boots.
+            If adding an ID for heels, do not add an ID for another pair of heels.
+            Head-to-Toe Order:
+            Arrange the IDs in the array from head to toe.
+            Response Format:
+            Respond only with the array of clothing IDs.
+            CRITICAL RULE: Do not include any letters or text in your response, only numbers in an array.
+            Example: [1, 2, 3, 4]
+            
+            Double Check:
+          
+            Check ALL ID's in array to ensure no rules are broken. If any of the EXTREMELY IMPORTANT RULES are broken, fix your response.
+            Ensure IDs are in head-to-toe order.`
           },
           {
             role: 'user',
@@ -189,6 +199,8 @@ const GenerateOutfit = (currentWeather) => {
         frequency_penalty: 0,
         presence_penalty: 0,
       });
+
+      console.log('OpenAI API Response:', result);
 
       const outfitArray = JSON.parse(result.choices[0].message.content);
       setResponse(result.choices[0].message.content);
@@ -236,6 +248,17 @@ const GenerateOutfit = (currentWeather) => {
         </div>
       )}
       <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
+      <div className="text-center mb-4">
+        <select 
+          onChange={handleOccasionChange} 
+          className="bg-white border border-gray-300 rounded px-4 py-2"
+        >
+          <option value="">Select Occasion</option>
+          <option value="Casual">Casual</option>
+          <option value="Work">Work</option>
+          <option value="Business Casual">Business Casual</option>
+        </select>
+      </div>
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : error ? (
@@ -250,13 +273,13 @@ const GenerateOutfit = (currentWeather) => {
           </div>
         </div>
       )}
-      {user && (
+      {/* {user && (
         <div className="user-info text-center my-4">
           <h2 className="text-2xl font-bold">{user.username}</h2>
           <p>{user.email}</p>
           <img src={user.photo} alt="User Photo" className="mx-auto rounded-full h-24 w-24" />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
