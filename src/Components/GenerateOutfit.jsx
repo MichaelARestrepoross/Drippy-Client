@@ -218,7 +218,7 @@ const GenerateOutfit = (currentWeather) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Locations</h1>
+      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Locations</h1>
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : (
@@ -247,7 +247,7 @@ const GenerateOutfit = (currentWeather) => {
           )}
         </div>
       )}
-      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
+      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Clothes</h1>
       <div className="text-center mb-4">
         <select 
           onChange={handleOccasionChange} 
