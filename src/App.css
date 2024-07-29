@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=EB+Garamond:ital@0;1&family=Playwrite+AU+TAS:wght@100..400&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: 'EB Garamond', serif;
+}

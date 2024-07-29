@@ -48,7 +48,7 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-100 to-purple-400 to-purple-600">
       {console.log(userDetails)}
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         {userDetails ? (

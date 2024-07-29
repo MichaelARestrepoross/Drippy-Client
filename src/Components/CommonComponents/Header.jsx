@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/drippylogo.png';
+import "./Header.css"
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,24 +23,22 @@ const Header = () => {
 
 
   return (
-    <header className="bg-gray-400 shadow h-20"> 
+    <header className="bg-white-400 shadow h-20"> 
       <div className="container mx-auto px-6 flex justify-between items-center h-full">
         <div className="flex items-center">
-          <img src={logo} alt="Logo" className="h-16 w-auto" onClick={handleNavigateLanding}/> 
+          <img src={logo} alt="Logo" className="h-16 w-auto logo-img" onClick={handleNavigateLanding}/> 
         </div>
         <div className="flex items-center space-x-4">
           <button
             onClick={handleNavigateHome}
-            className="flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
+            className="home-nav flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
           >
-            <span>Home</span>
             <span className="icon-placeholder-home mr-2">🏠</span>
           </button>
           <button
             onClick={handleNavigateProfile}
-            className="flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
+            className="profile-nav flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
           >
-            <span>My Profile</span>
             <span className="icon-placeholder-clothing mr-2">👤</span>
           </button>
         </div>

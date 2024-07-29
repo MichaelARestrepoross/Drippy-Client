@@ -12,6 +12,7 @@ const ClothesIndex = () => {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
+  const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(true); // New state variable
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -115,36 +116,44 @@ const ClothesIndex = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
 
-      <div className="flex justify-center mb-6 flex-wrap gap-4">
-        <FilterBox
-          type="None"
-          onClick={() => handleFilterClick(null)}
-          className="bg-gray-200 text-gray-700"
-        />
-        {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
-          <FilterBox
-            key={type}
-            type={type}
-            onClick={() => handleFilterClick(type)}
-            className={`cursor-pointer ${selectedType === type ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-          />
-        ))}
-      </div>
-
       <div className="flex justify-center mb-6 gap-4">
         <button
+          onClick={() => setIsFilterBoxVisible(!isFilterBoxVisible)}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 shadow-dark-lg"
+        >
+          {isFilterBoxVisible ? 'Hide Filters' : 'Show Filters'}
+        </button>
+        <button
           onClick={() => setIsColorModalOpen(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 shadow-dark-lg"
         >
           Filter by Color
         </button>
         <button
           onClick={handleResetFilters}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 shadow-dark-lg"
         >
           Reset Filters
         </button>
       </div>
+
+      {isFilterBoxVisible && (
+        <div className="flex justify-center mb-6 flex-wrap gap-4">
+          <FilterBox
+            type="None"
+            onClick={() => handleFilterClick(null)}
+            className="bg-gray-200 text-gray-700"
+          />
+          {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
+            <FilterBox
+              key={type}
+              type={type}
+              onClick={() => handleFilterClick(type)}
+              className={`cursor-pointer ${selectedType === type ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+            />
+          ))}
+        </div>
+      )}
 
       <ColorFilterModal
         isOpen={isColorModalOpen}

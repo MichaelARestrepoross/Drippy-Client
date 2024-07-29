@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import ClothesIndex from './ClothesIndex';
+import './Wardrobe.css';
 
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Make sure these are set in your environment
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -12,11 +13,11 @@ function Wardrobe() {
   };
 
   return (
-    <div className="pr-6 pl-0">
-      <h1 className="text-2xl font-bold mb-4">Wardrobe</h1>
+    <div className="pr-6 pl-0 wardrobe-wrapper bg-purple-300">
+      <h1 className="text-2xl font-bold mb-4">My Wardrobe</h1>
       <button
         onClick={handleAddClothing}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition shadow-dark-lg"
       >
         Add New Clothing
       </button>

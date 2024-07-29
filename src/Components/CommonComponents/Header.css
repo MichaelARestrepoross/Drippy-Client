@@ -1,0 +1,8 @@
+.logo-img, .home-nav, .profile-nav {
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo-img:hover, .home-nav:hover, .profile-nav:hover {
+  transform: scale(1.5);
+  cursor: pointer;
+}
