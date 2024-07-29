@@ -67,11 +67,18 @@ function Profile() {
               <p className="text-gray-700 mb-4"><span className="font-semibold">Username:</span> {userDetails.username}</p>
             </div>
 
-            <button
+            {/* <button
               onClick={() => navigate('/wardrobe')}
               className="w-full py-3 px-6 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mb-4 "
             >
               Go to Wardrobe
+            </button> */}
+
+            <button
+              onClick={() => navigate('/homepage')}
+              className="w-full py-3 px-6 bg-purple-600 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mb-4 "
+            >
+              Go to Home
             </button>
 
             {showAddLocation && (
