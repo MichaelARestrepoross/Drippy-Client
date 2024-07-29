@@ -4,7 +4,7 @@ const ClothesCard = ({ id, image_base64, image_url, prompt, color, type_name, ma
   const imageUrl = image_url || image_base64;
 
   return (
-    <div onClick={onClick} className="bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition">
+    <div onClick={onClick} className="bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-dark-lg transform transition-transform duration-300 hover:scale-105">
       <img src={imageUrl} alt={prompt} className="h-64 w-full object-cover" />
       <div className="p-4">
         <h3 className="text-xl font-bold mb-2 text-purple-700">{color} {type_name}</h3>

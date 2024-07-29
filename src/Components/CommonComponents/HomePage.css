@@ -14,8 +14,8 @@
 }
 
 .welcome-wrapper {
-  background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+  background: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 10px;
-  width: 30%;
+  width: 400px;
 }

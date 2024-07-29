@@ -12,7 +12,7 @@ const ClothesIndex = () => {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
-  const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(true); // New state variable
+  const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // Set to false to hide filters initially
 
   useEffect(() => {
     const fetchClothes = async () => {

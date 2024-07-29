@@ -217,71 +217,68 @@ const GenerateOutfit = (currentWeather) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Locations</h1>
-      {loading ? (
-        <p className="text-center">Loading...</p>
-      ) : (
-        <div className="text-center">
-          <select 
-            onChange={handleLocationChange} 
-            className="bg-white border border-gray-300 rounded px-4 py-2 mb-4"
-          >
-            <option value="">Select a Location</option>
-            {locations.map((location) => (
-              <option key={location.location_id} value={location.location_id}>
-                {location.name}
-              </option>
-            ))}
-          </select>
-          {selectedLocation && (
-            <div>
-              <h2 className="text-2xl font-bold">{selectedLocation.name}</h2>
-              <GetWeather 
-                coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }}
-                selectedWeatherData={selectedWeatherData}
-                setSelectedWeatherData={setSelectedWeatherData}
-              />
-              {console.log(selectedWeatherData)}
-            </div>
-          )}
-        </div>
-      )}
-      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Clothes</h1>
-      <div className="text-center mb-4">
-        <select 
-          onChange={handleOccasionChange} 
-          className="bg-white border border-gray-300 rounded px-4 py-2"
-        >
-          <option value="">Select Occasion</option>
-          <option value="Casual">Casual</option>
-          <option value="Work">Work</option>
-          <option value="Business Casual">Business Casual</option>
-        </select>
-      </div>
-      {loading ? (
-        <p className="text-center">Loading...</p>
-      ) : error ? (
-        <p className="text-center">{error}</p>
-      ) : (
-        <div className="outfit text-center">
-          <p>Outfit Created:</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
-              <ClothesCard key={item.clothes_id} {...item} />
-            ))}
+    <div className="container mx-auto px-4 py-8 bg-purple-300 min-h-screen flex flex-col items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full mb-8">
+        <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Locations</h1>
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <div className="text-center">
+            <select 
+              onChange={handleLocationChange} 
+              className="bg-white border border-gray-300 rounded px-4 py-2 mb-4 w-1/2 text-center"
+            >
+              <option value="">Select a Location</option>
+              {locations.map((location) => (
+                <option key={location.location_id} value={location.location_id}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
+            {selectedLocation && (
+              <div>
+                <h2 className="text-2xl font-bold">{selectedLocation.name}</h2>
+                <GetWeather 
+                  coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }}
+                  selectedWeatherData={selectedWeatherData}
+                  setSelectedWeatherData={setSelectedWeatherData}
+                />
+                {console.log(selectedWeatherData)}
+              </div>
+            )}
           </div>
+        )}
+      </div>
+  
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
+        <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Outfit</h1>
+        <div className="text-center mb-4">
+          <select 
+            onChange={handleOccasionChange} 
+            className="bg-white border border-gray-300 rounded px-4 py-2 w-1/2 text-center"
+          >
+            <option value="">Select Occasion</option>
+            <option value="Casual">Casual</option>
+            <option value="Work">Work</option>
+            <option value="Business Casual">Business Casual</option>
+          </select>
         </div>
-      )}
-      {/* {user && (
-        <div className="user-info text-center my-4">
-          <h2 className="text-2xl font-bold">{user.username}</h2>
-          <p>{user.email}</p>
-          <img src={user.photo} alt="User Photo" className="mx-auto rounded-full h-24 w-24" />
-        </div>
-      )} */}
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : error ? (
+          <p className="text-center">{error}</p>
+        ) : (
+          <div className="outfit flex justify-center text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
+                <ClothesCard key={item.clothes_id} {...item} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-  );
+  );  
 };
 
 export default GenerateOutfit;

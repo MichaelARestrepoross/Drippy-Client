@@ -48,9 +48,10 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-100 to-purple-400 to-purple-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-100 to-purple-400 to-purple-600 pb-10">
+
       {console.log(userDetails)}
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <div className="bg-white shadow-dark-lg rounded-lg pt-8 p-8 w-full max-w-md my-12">
         {userDetails ? (
           <>
             <img
@@ -68,7 +69,7 @@ function Profile() {
 
             <button
               onClick={() => navigate('/wardrobe')}
-              className="w-full py-3 px-6 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mb-4"
+              className="w-full py-3 px-6 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mb-4 "
             >
               Go to Wardrobe
             </button>
@@ -88,7 +89,7 @@ function Profile() {
 
             <button
               onClick={handleLogout}
-              className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow-dark-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               Logout
             </button>
