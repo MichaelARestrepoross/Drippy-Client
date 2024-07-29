@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import goopVideo from '../../assets/goop.mp4';
+import logo from '../../assets/drippylogo.png';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ function HomePage() {
         Your browser does not support the video tag.
       </video>
       <div className="welcome-wrapper relative z-10 flex flex-col items-center">
-        <h1 className="text-4xl font-bold mb-8 text-purple-700">Welcome to Drippy</h1>
+        {/* <h1 className="text-4xl font-bold mb-8 text-purple-700">Welcome to Drippy</h1> */}
+        <img src={logo} alt="Logo" />
         <div className="space-y-4 sm:space-x-0 sm:flex sm:flex-col">
           <button 
             onClick={() => handleNavigation('/wardrobe')}
