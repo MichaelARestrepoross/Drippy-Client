@@ -45,7 +45,11 @@ const ClothesIndex = () => {
         }
 
         const data = await response.json();
-        setClothes(data);
+
+        // Sort clothes by updated_at in descending order
+        const sortedClothes = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+        setClothes(sortedClothes);
       } catch (error) {
         console.error('Fetch error:', error);
         toast.error(error.message, { position: 'bottom-center' });
@@ -170,6 +174,7 @@ const ClothesIndex = () => {
         <p className="text-center">No results found for {selectedType || 'any type'} {selectedColor || 'color'}.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {console.log("filtered clothes index:", filteredClothes)}
           {filteredClothes.map((item) => (
             <ClothesCard key={item.clothes_id} {...item} onClick={() => handleCardClick(item.clothes_id)} />
           ))}
