@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
 import FilterBox from './FilterBox';
 import ColorFilterModal from './ColorFilterModal';
+import UpdateClothes from './UpdateClothes';  
 
 const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
@@ -13,6 +14,7 @@ const ClothesIndex = () => {
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
   const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // Set to false to hide filters initially
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);  // State for update modal
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -179,7 +181,10 @@ const ClothesIndex = () => {
           <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
             <h2 className="text-xl font-bold mb-4">Manage Clothing</h2>
             <button
-              onClick={() => console.log('Edit clothing functionality to be implemented')}
+              onClick={() => {
+                setIsActionModalOpen(false);
+                setIsUpdateModalOpen(true);
+              }}
               className="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600 w-full"
             >
               Edit Clothing
@@ -198,6 +203,14 @@ const ClothesIndex = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {isUpdateModalOpen && (
+        <UpdateClothes
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          clothesId={selectedClothingID}
+        />
       )}
     </div>
   );
