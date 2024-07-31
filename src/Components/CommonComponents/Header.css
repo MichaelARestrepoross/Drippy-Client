@@ -4,6 +4,7 @@
   overflow: hidden;
   z-index: 10;
   position: relative;
+  border-bottom: 3px solid gray;
 }
 
 .header-container {

@@ -138,7 +138,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          className="absolute top-4 right-4 hover:text-gray-800"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
