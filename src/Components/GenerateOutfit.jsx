@@ -14,6 +14,8 @@ const GenerateOutfit = (currentWeather) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedOccasion, setSelectedOccasion] = useState('');
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   useEffect(() => {
     const fetchClothes = async () => {
       const token = localStorage.getItem('token');
@@ -25,7 +27,7 @@ const GenerateOutfit = (currentWeather) => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/clothes', {
+        const response = await fetch(`${BASE_URL}/api/clothes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -63,7 +65,7 @@ const GenerateOutfit = (currentWeather) => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/locations', {
+        const response = await fetch(`${BASE_URL}/api/locations`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
