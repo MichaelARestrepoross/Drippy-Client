@@ -156,8 +156,8 @@ const GenerateOutfit = (currentWeather) => {
       }
     }
 
-    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels)
-    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels'];
+    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels, Suit, Button-Up Shirt)
+    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels',`Suit`,`Button-Up Shirt`];
     outfit.sort((a, b) => {
       const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
       const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;

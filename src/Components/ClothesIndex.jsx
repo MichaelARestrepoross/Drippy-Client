@@ -153,7 +153,7 @@ const ClothesIndex = () => {
             onClick={() => handleFilterClick(null)}
             className="bg-gray-200 text-gray-700"
           />
-          {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
+          {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels', 'Suit','Button-Up Shirt'].map((type) => (
             <FilterBox
               key={type}
               type={type}

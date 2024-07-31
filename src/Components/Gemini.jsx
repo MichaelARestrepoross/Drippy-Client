@@ -38,6 +38,8 @@ const Gemini = ({ imageUrl, onProcessed }) => {
             8: Sneakers
             9: Boots
             10: Heels
+            11: Suit
+            12: Button-Up Shirt
 
             "material_id" values:
             1: Cotton
