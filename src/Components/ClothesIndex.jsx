@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
 import FilterBox from './FilterBox';
 import ColorFilterModal from './ColorFilterModal';
+import UpdateClothes from './UpdateClothes';  
 
 const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
@@ -13,6 +14,7 @@ const ClothesIndex = () => {
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
   const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // Set to false to hide filters initially
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);  // State for update modal
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -43,7 +45,11 @@ const ClothesIndex = () => {
         }
 
         const data = await response.json();
-        setClothes(data);
+
+        // Sort clothes by updated_at in descending order
+        const sortedClothes = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+        setClothes(sortedClothes);
       } catch (error) {
         console.error('Fetch error:', error);
         toast.error(error.message, { position: 'bottom-center' });
@@ -168,6 +174,7 @@ const ClothesIndex = () => {
         <p className="text-center">No results found for {selectedType || 'any type'} {selectedColor || 'color'}.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {console.log("filtered clothes index:", filteredClothes)}
           {filteredClothes.map((item) => (
             <ClothesCard key={item.clothes_id} {...item} onClick={() => handleCardClick(item.clothes_id)} />
           ))}
@@ -179,7 +186,10 @@ const ClothesIndex = () => {
           <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
             <h2 className="text-xl font-bold mb-4">Manage Clothing</h2>
             <button
-              onClick={() => console.log('Edit clothing functionality to be implemented')}
+              onClick={() => {
+                setIsActionModalOpen(false);
+                setIsUpdateModalOpen(true);
+              }}
               className="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600 w-full"
             >
               Edit Clothing
@@ -198,6 +208,14 @@ const ClothesIndex = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {isUpdateModalOpen && (
+        <UpdateClothes
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          clothesId={selectedClothingID}
+        />
       )}
     </div>
   );
