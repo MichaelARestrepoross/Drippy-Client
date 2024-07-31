@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import OpenAI from 'openai';
 import ClothesCard from './ClothesCard';
 import GetWeather from './GetWeather';
-
-const API_KEY = import.meta.env.VITE_OPENAI_KEY;
-
-const openai = new OpenAI({
-  apiKey: API_KEY,
-  dangerouslyAllowBrowser: true,
-});
 
 const GenerateOutfit = (currentWeather) => {
   const [clothes, setClothes] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState('');
   const [outfit, setOutfit] = useState([]);
   const [error, setError] = useState('');
   const [selectedWeatherData, setSelectedWeatherData] = useState(null);
@@ -131,89 +122,47 @@ const GenerateOutfit = (currentWeather) => {
 
       const filteredClothes = climateFilter(filteredOccasion, selectedWeatherData[0]); // Access the first element of selectedWeatherData
 
-      // Call ChatGPT with the filtered data
-      const userContent = `Clothing Data: ${JSON.stringify(filteredClothes)}`;
-      callChatGPT(userContent);
+      // Generate outfit with the filtered data
+      const outfitArray = generateOutfit(filteredClothes);
+      setOutfit(outfitArray);
     } else {
-      // If no weather data, call ChatGPT with occasion filtered data only
-      const userContent = `Clothing Data: ${JSON.stringify(filteredOccasion)}`;
-      callChatGPT(userContent);
+      // If no weather data, generate outfit with occasion filtered data only
+      const outfitArray = generateOutfit(filteredOccasion);
+      setOutfit(outfitArray);
     }
   };
 
-  const callChatGPT = async (content) => {
-    setLoading(true);
-    setError('');
-
-    try {
-      const result = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo-16k',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a machine that only responds with arrays. You cannot use text in your response FOR ANY REASON WHAT SO EVER.
-
-            Goal: Create one outfit from the Clothing Data using the "clothing_id". Each outfit is represented by an array of clothing IDs.
-
-            THE FOLLOWING RULES CANNOT BE BROKEN UNDER ANY CIRCUMSTANCE, ELSE YOU WILL CREATE A CRITICAL ERROR
-
-            EXTREMELY IMPORTANT RULES:
-            
-            No Overlapping or repeating "type_name":
-            If adding an ID for pants, do not add an ID for shorts. If adding an ID for shorts, do not add an ID for pants.
-            If adding an ID for a shirt, do not add an ID for a sweater. If adding an ID for a sweater, do not add an ID for a shirt.
-            If adding an ID for shoes, do not add an ID for sandals. If adding an ID for sandals, do not add an ID for shoes.
-            If adding an ID for a T-shirt, do not add an ID for a tank-top. If adding an ID for a tank-top, do not add an ID for a T-shirt.
-            If adding an ID for a T-shirt, do not add an ID for a sweater. If adding an ID for a sweater, do not add an ID for a T-shirt.
-            If adding an ID for a tank-top, do not add an ID for a sweater. If adding an ID for a sweater, do not add an ID for a tank-top.
-            If adding an ID for pants, do not add an ID for another pair of pants.
-            If adding an ID for shoes, do not add an ID for another pair of shoes.
-            If adding an ID for a sweater, do not add an ID for another sweater.
-            If adding an ID for a T-shirt, do not add an ID for another T-shirt.
-            If adding an ID for shorts, do not add an ID for another pair of shorts.
-            If adding an ID for sandals, do not add an ID for another pair of sandals.
-            If adding an ID for a skirt, do not add an ID for another skirt.
-            If adding an ID for sneakers, do not add an ID for another pair of sneakers.
-            If adding an ID for boots, do not add an ID for another pair of boots.
-            If adding an ID for heels, do not add an ID for another pair of heels.
-            Head-to-Toe Order:
-            Arrange the IDs in the array from head to toe.
-            Response Format:
-            Respond only with the array of clothing IDs.
-            CRITICAL RULE: Do not include any letters or text in your response, only numbers in an array.
-            Example: [1, 2, 3, 4]
-            
-            Double Check:
-          
-            Check ALL ID's in array to ensure no rules are broken. If any of the EXTREMELY IMPORTANT RULES are broken, fix your response.
-            Ensure IDs are in head-to-toe order.`
-          },
-          {
-            role: 'user',
-            content: content
-          }
-        ],
-        temperature: 1,
-        max_tokens: 256,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      });
-
-      console.log('OpenAI API Response:', result);
-
-      const outfitArray = JSON.parse(result.choices[0].message.content);
-      setResponse(result.choices[0].message.content);
-      setOutfit(outfitArray);
-      console.log(result.choices[0].message.content);
-      console.log(content);
-    } catch (error) {
-      console.error('Error calling OpenAI API:', error);
-      setError('Error calling OpenAI API');
-      setResponse('');
-    } finally {
-      setLoading(false);
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
+  };
+
+  const generateOutfit = (filteredClothes) => {
+    const outfit = [];
+    const addedTypes = new Set();
+
+    // Shuffle the filtered clothes
+    shuffleArray(filteredClothes);
+
+    // Add clothes in head-to-toe order
+    for (const item of filteredClothes) {
+      if (!addedTypes.has(item.type_name)) {
+        outfit.push(item.clothes_id);
+        addedTypes.add(item.type_name);
+      }
+    }
+
+    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels)
+    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels'];
+    outfit.sort((a, b) => {
+      const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
+      const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;
+      return typeOrder.indexOf(typeA) - typeOrder.indexOf(typeB);
+    });
+
+    return outfit;
   };
 
   return (
@@ -268,12 +217,10 @@ const GenerateOutfit = (currentWeather) => {
         ) : error ? (
           <p className="text-center">{error}</p>
         ) : (
-          <div className="outfit flex justify-center text-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
-                <ClothesCard key={item.clothes_id} {...item} />
-              ))}
-            </div>
+          <div className="outfit flex flex-col items-center">
+            {clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
+              <ClothesCard key={item.clothes_id} {...item} />
+            ))}
           </div>
         )}
       </div>
