@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./LandingPage.css"
+import "./LandingPage.css";
+import "./Header.css"
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.querySelector('.top-background').classList.add('bounce');
+    }, 2000); 
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleGetStarted = () => {
     navigate('/homepage');
@@ -14,29 +23,25 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-500 to-white">
-      <section className="py-20">
-        <div className="container mx-auto px-6 text-center bg-transparent">
-        <h1 className="text-9xl font-bold text-white text-shadow">Welcome to Drippy</h1>
-          <p className="text-gray-600 mt-4"></p>
-          <div className="mt-6">
-            <button
-              onClick={handleGetStarted}
-              className="w-48 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 shadow-dark-lg"
-            >
-              Get Started
-            </button>
-          </div>
-          <div className="mt-4">
-            <button
-              onClick={handleGoHome}
-              className="w-48 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500 shadow-dark-lg"
-            >
-              Sign Up/In
-            </button>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-white to-purple-500">
+      <section className="top-background">
+        {/* The background with the logo will cover this section */}
       </section>
+
+      <div className="button-container">
+        <button
+          onClick={handleGetStarted}
+          className="w-48 px-4 py-2 bg-white text-purple-500 rounded hover:bg-purple-500 hover:text-white shadow-dark-lg"
+        >
+          Get Started
+        </button>
+        <button
+          onClick={handleGoHome}
+          className="w-48 px-4 py-2 bg-gray-400 text-purple-600 rounded hover:bg-gray-500 hover:text-purple-300 shadow-dark-lg"
+        >
+          Sign Up/In
+        </button>
+      </div>
 
       <section id="features" className="py-20">
         <div className="container mx-auto px-6 text-center bg-transparent">

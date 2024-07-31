@@ -21,25 +21,21 @@ const Header = () => {
     navigate('/profile');
   };
 
-
   return (
-    <header className="bg-white-400 h-20"> 
-      <div className="container mx-auto px-6 flex justify-between items-center h-full">
-        <div className="flex items-center">
-          <img src={logo} alt="Logo" className="h-16 w-auto logo-img" onClick={handleNavigateLanding}/> 
+    <header className="header">
+      <div className="header-container">
+        <div className="logo-container">
+          <img src={logo} alt="Logo" className="logo-img" onClick={handleNavigateLanding}/>
         </div>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={handleNavigateHome}
-            className="home-nav flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
-          >
-            <span className="icon-placeholder-home mr-2">🏠</span>
+        <div className="nav-buttons">
+          <button onClick={handleNavigateHome} className="nav-button home-nav">
+            <span className="icon-placeholder-home">Home</span>
           </button>
-          <button
-            onClick={handleNavigateProfile}
-            className="profile-nav flex items-center text-gray-800 hover:text-purple-600 text-xl bg-transparent"
-          >
-            <span className="icon-placeholder-clothing mr-2">👤</span>
+          <button onClick={handleNavigateProfile} className="nav-button profile-nav">
+            <span className="icon-placeholder-clothing">Profile</span>
+          </button>
+          <button onClick={handleNavigateProfile} className="nav-button profile-nav">
+            <span className="icon-placeholder-clothing">About Us</span>
           </button>
         </div>
       </div>

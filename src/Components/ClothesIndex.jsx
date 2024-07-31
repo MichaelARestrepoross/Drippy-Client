@@ -119,10 +119,10 @@ const ClothesIndex = () => {
   });
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-8 py-8">
       <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
 
-      <div className="flex justify-center mb-6 gap-4">
+      <div className="flex justify-center mb-6 gap-6">
         <button
           onClick={() => setIsFilterBoxVisible(!isFilterBoxVisible)}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 shadow-dark-lg"
@@ -173,8 +173,7 @@ const ClothesIndex = () => {
       ) : filteredClothes.length === 0 ? (
         <p className="text-center">No results found for {selectedType || 'any type'} {selectedColor || 'color'}.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {console.log("filtered clothes index:", filteredClothes)}
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredClothes.map((item) => (
             <ClothesCard key={item.clothes_id} {...item} onClick={() => handleCardClick(item.clothes_id)} />
           ))}

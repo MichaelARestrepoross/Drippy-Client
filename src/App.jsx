@@ -29,6 +29,7 @@ import ImageHandler from './Components/ImageHandler';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import './Components/CommonComponents/Header.css'
 
 function App() {
   const [user, setUser] = useState();
