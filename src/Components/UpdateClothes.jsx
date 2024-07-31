@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
   const [formValues, setFormValues] = useState({
     color: '',
@@ -31,7 +33,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
       }
 
       try {
-        const response = await fetch(`http://localhost:3003/api/clothes/${clothesId}`, {
+        const response = await fetch(`${BASE_URL}/api/clothes/${clothesId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -76,10 +78,10 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
       }
     };
 
-    fetchOptions('http://localhost:3003/api/types', setTypes);
-    fetchOptions('http://localhost:3003/api/materials', setMaterials);
-    fetchOptions('http://localhost:3003/api/temperature-ranges', setTemperatureRanges);
-    fetchOptions('http://localhost:3003/api/humidity-levels', setHumidityLevels);
+    fetchOptions(`${BASE_URL}/api/types`, setTypes);
+    fetchOptions(`${BASE_URL}/api/materials`, setMaterials);
+    fetchOptions(`${BASE_URL}/api/temperature-ranges`, setTemperatureRanges);
+    fetchOptions(`${BASE_URL}/api/humidity-levels`, setHumidityLevels);
   }, []);
 
   const handleChange = (e) => {
@@ -100,7 +102,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3003/api/clothes/${clothesId}`, {
+      const response = await fetch(`${BASE_URL}/api/clothes/${clothesId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

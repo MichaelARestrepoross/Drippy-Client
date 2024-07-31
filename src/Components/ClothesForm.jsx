@@ -3,6 +3,8 @@ import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 // Ensure the modal root element is set
 Modal.setAppElement('#root'); // Adjust according to your app's root element
 
@@ -47,10 +49,10 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       }
     };
 
-    fetchOptions('http://localhost:3003/api/types', setTypes);
-    fetchOptions('http://localhost:3003/api/materials', setMaterials);
-    fetchOptions('http://localhost:3003/api/temperature-ranges', setTemperatureRanges);
-    fetchOptions('http://localhost:3003/api/humidity-levels', setHumidityLevels);
+    fetchOptions(`${BASE_URL}/api/types`, setTypes);
+    fetchOptions(`${BASE_URL}/api/materials`, setMaterials);
+    fetchOptions(`${BASE_URL}/api/temperature-ranges`, setTemperatureRanges);
+    fetchOptions(`${BASE_URL}/api/humidity-levels`, setHumidityLevels);
   }, []);
 
   const handleChange = (e) => {
@@ -71,7 +73,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:3003/api/clothes', {
+      const response = await fetch(`${BASE_URL}/api/clothes`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

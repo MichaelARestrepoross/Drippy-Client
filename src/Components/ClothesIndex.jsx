@@ -5,6 +5,8 @@ import FilterBox from './FilterBox';
 import ColorFilterModal from './ColorFilterModal';
 import UpdateClothes from './UpdateClothes';  
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,7 @@ const ClothesIndex = () => {
   const [selectedClothingID, setSelectedClothingID] = useState(null);
   const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // Set to false to hide filters initially
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);  // State for update modal
+  
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -27,7 +30,7 @@ const ClothesIndex = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/clothes', {
+        const response = await fetch(`${BASE_URL}/api/clothes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -89,7 +92,7 @@ const ClothesIndex = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3003/api/clothes/${selectedClothingID}`, {
+      const response = await fetch(`${BASE_URL}/api/clothes/${selectedClothingID}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
