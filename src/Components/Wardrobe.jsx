@@ -16,7 +16,7 @@ function Wardrobe() {
   };
 
   return (
-    <div className="wardrobe-wrapper bg-purple-300 p-6">
+    <div className="wardrobe-wrapper bg-purple-300 p-1 py-4">
       <div className="header-container flex justify-between items-center mb-6">
         <h1 className="text-7xl font-bold text-white text-shadow">My Wardrobe</h1>
         <div className="flex gap-4">
@@ -37,6 +37,6 @@ function Wardrobe() {
       <ClothesIndex />
     </div>
   );
-};
+}
 
 export default Wardrobe;
