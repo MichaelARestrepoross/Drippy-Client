@@ -166,7 +166,7 @@ const GenerateOutfit = (currentWeather) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-purple-300 min-h-screen flex flex-col items-center justify-center">
+    <div className="container mx-auto px-4 py-8 bg-purple-400 min-h-screen flex flex-col items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full mb-8">
         <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Locations</h1>
         {loading ? (

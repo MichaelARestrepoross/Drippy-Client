@@ -3,7 +3,8 @@ import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
 import FilterBox from './FilterBox';
 import ColorFilterModal from './ColorFilterModal';
-import UpdateClothes from './UpdateClothes';  
+import UpdateClothes from './UpdateClothes';
+import "./ClothesIndex.css"
 
 const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
@@ -13,8 +14,7 @@ const ClothesIndex = () => {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
-  const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(false); // Set to false to hide filters initially
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);  // State for update modal
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -45,8 +45,6 @@ const ClothesIndex = () => {
         }
 
         const data = await response.json();
-
-        // Sort clothes by updated_at in descending order
         const sortedClothes = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
         setClothes(sortedClothes);
@@ -119,47 +117,30 @@ const ClothesIndex = () => {
   });
 
   return (
-    <div className="container mx-auto px-8 py-8">
-      <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">Your Clothes</h1>
-
-      <div className="flex justify-center mb-6 gap-6">
-        <button
-          onClick={() => setIsFilterBoxVisible(!isFilterBoxVisible)}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 shadow-dark-lg"
-        >
-          {isFilterBoxVisible ? 'Hide Filters' : 'Show Filters'}
-        </button>
-        <button
+    <div className="container mx-auto px-8">
+      <div className="filters-bar flex items-center justify-center gap-8 mb-6">
+        <span
           onClick={() => setIsColorModalOpen(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 shadow-dark-lg"
+          className="filter-link"
         >
           Filter by Color
-        </button>
-        <button
+        </span>
+        <span
           onClick={handleResetFilters}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 shadow-dark-lg"
+          className="filter-link"
         >
           Reset Filters
-        </button>
+        </span>
+        {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
+          <span
+            key={type}
+            onClick={() => handleFilterClick(type)}
+            className={`filter-link ${selectedType === type ? 'active' : ''}`}
+          >
+            {type}
+          </span>
+        ))}
       </div>
-
-      {isFilterBoxVisible && (
-        <div className="flex justify-center mb-6 flex-wrap gap-4">
-          <FilterBox
-            type="None"
-            onClick={() => handleFilterClick(null)}
-            className="bg-gray-200 text-gray-700"
-          />
-          {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
-            <FilterBox
-              key={type}
-              type={type}
-              onClick={() => handleFilterClick(type)}
-              className={`cursor-pointer ${selectedType === type ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-            />
-          ))}
-        </div>
-      )}
 
       <ColorFilterModal
         isOpen={isColorModalOpen}
