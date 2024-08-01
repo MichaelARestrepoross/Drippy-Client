@@ -6,6 +6,8 @@ import ColorFilterModal from './ColorFilterModal';
 import UpdateClothes from './UpdateClothes';
 import "./ClothesIndex.css"
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const ClothesIndex = () => {
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +29,7 @@ const ClothesIndex = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/clothes', {
+        const response = await fetch(`${BASE_URL}/api/clothes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -87,7 +89,7 @@ const ClothesIndex = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3003/api/clothes/${selectedClothingID}`, {
+      const response = await fetch(`${BASE_URL}/api/clothes/${selectedClothingID}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -131,7 +133,7 @@ const ClothesIndex = () => {
         >
           Reset Filters
         </span>
-        {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels'].map((type) => (
+        {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels', 'Suit','Button-Up Shirt'].map((type) => (
           <span
             key={type}
             onClick={() => handleFilterClick(type)}
@@ -141,7 +143,6 @@ const ClothesIndex = () => {
           </span>
         ))}
       </div>
-
       <ColorFilterModal
         isOpen={isColorModalOpen}
         onRequestClose={() => setIsColorModalOpen(false)}

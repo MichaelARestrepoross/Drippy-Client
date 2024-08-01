@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify'; // Ensure toast is imported if not already
 import GetWeather from './GetWeather';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const GetLocation = () => {
   const [city, setCity] = useState('');
   const [stateName, setStateName] = useState('');
@@ -30,7 +32,7 @@ const GetLocation = () => {
         };
 
         try {
-          const response = await fetch('http://localhost:3003/api/locations', {
+          const response = await fetch(`${BASE_URL}/api/locations`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,

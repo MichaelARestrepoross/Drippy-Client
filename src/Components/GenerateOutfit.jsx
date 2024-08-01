@@ -14,6 +14,8 @@ const GenerateOutfit = (currentWeather) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedOccasion, setSelectedOccasion] = useState('');
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   useEffect(() => {
     const fetchClothes = async () => {
       const token = localStorage.getItem('token');
@@ -25,7 +27,7 @@ const GenerateOutfit = (currentWeather) => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/clothes', {
+        const response = await fetch(`${BASE_URL}/api/clothes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -63,7 +65,7 @@ const GenerateOutfit = (currentWeather) => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/locations', {
+        const response = await fetch(`${BASE_URL}/api/locations`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -154,8 +156,8 @@ const GenerateOutfit = (currentWeather) => {
       }
     }
 
-    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels)
-    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels'];
+    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels, Suit, Button-Up Shirt)
+    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels',`Suit`,`Button-Up Shirt`];
     outfit.sort((a, b) => {
       const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
       const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;
