@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-// Ensure the modal root element is set
 Modal.setAppElement('#root'); // Adjust according to your app's root element
 
 const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
@@ -108,7 +107,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       className="fixed inset-0 flex items-center justify-center p-4"
       overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50"
     >
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative max-h-[80vh] overflow-y-auto mt-16">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
