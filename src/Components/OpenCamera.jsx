@@ -16,6 +16,7 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
       setCameraDevices(videoDevices);
+      console.log(videoDevices);
       if (videoDevices.length > 0) {
         setCurrentCameraId(videoDevices[0].deviceId); // Select the first camera by default
       }
