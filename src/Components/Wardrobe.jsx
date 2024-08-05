@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import ClothesIndex from './ClothesIndex';
 import './Wardrobe.css';
 
-const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Make sure these are set in your environment
+const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 function Wardrobe() {
