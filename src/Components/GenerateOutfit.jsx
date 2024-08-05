@@ -14,7 +14,8 @@ const GenerateOutfit = (currentWeather) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedOccasion, setSelectedOccasion] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-  const [weatherToggle, setWeatherToggle] = useState(false)
+  const [weatherToggle, setWeatherToggle] = useState(false);
+  const [generateClicked, setGenerateClicked] = useState(false);
 
   const colorMatches = {
     "Red": ["#FFFFFF", "#000000", "#F5F5DC", "#FFA500", "#A52A2A", "#800000", "#FF6347", "#FFD700", "#8B0000"],
@@ -121,22 +122,25 @@ const GenerateOutfit = (currentWeather) => {
     const selectedId = e.target.value;
     const selectedLocation = locations.find(location => location.location_id === parseInt(selectedId));
     setSelectedLocation(selectedLocation);
-    setWeatherToggle(!weatherToggle)
+    setWeatherToggle(!weatherToggle);
     setSelectedOccasion(''); // Reset occasion when location changes
     setSelectedColor(''); // Reset color when location changes
     setOutfit([]); // Clear outfit when location changes
-    console.log(weatherToggle)
+    setGenerateClicked(false); // Reset generateClicked state
+    console.log(weatherToggle);
   };
 
   const handleOccasionChange = (e) => {
     const selectedOccasion = e.target.value;
     setSelectedOccasion(selectedOccasion);
     setSelectedColor(''); // Reset color when occasion changes
+    setGenerateClicked(false); // Reset generateClicked state
   };
 
   const handleColorChange = (e) => {
     const selectedColor = e.target.value;
     setSelectedColor(selectedColor);
+    setGenerateClicked(false); // Reset generateClicked state
   };
 
   const hexToRgb = (hex) => {
@@ -165,6 +169,8 @@ const GenerateOutfit = (currentWeather) => {
   };
 
   const generateOutfit = () => {
+    setGenerateClicked(true); // Set the generate button clicked state
+
     if (!selectedLocation || !selectedOccasion) {
       toast.error('Please select a location and occasion.', { position: 'bottom-center' });
       return;
@@ -205,11 +211,9 @@ const GenerateOutfit = (currentWeather) => {
       }
     }
 
-
     // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels, Suit, Button-Up Shirt)
-    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels',`Suit`,`Button-Up Shirt`];
-    outfit.sort((a, b) => {
-      
+    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels', 'Suit', 'Button-Up Shirt'];
+    outfitArray.sort((a, b) => {
       const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
       const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;
       return typeOrder.indexOf(typeA) - typeOrder.indexOf(typeB);
@@ -305,9 +309,23 @@ const GenerateOutfit = (currentWeather) => {
           <p className="text-center">{error}</p>
         ) : (
           <div className="outfit flex flex-col items-center mt-4">
-            {clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
-              <ClothesCard key={item.clothes_id} {...item} />
-            ))}
+            {generateClicked && outfit.length === 0 ? (
+              <div>
+              <p>Looks like you don't have any clothes for today's weather...</p>
+              <a 
+              href={`https://www.amazon.com/pants/s?k=${selectedOccasion}+Clothes`}
+              target="_blank"
+              rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                Check out these {selectedOccasion} options
+              </a>
+              </div>
+            ) : (
+              clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
+                <ClothesCard key={item.clothes_id} {...item} />
+              ))
+            )}
           </div>
         )}
       </div>
