@@ -101,10 +101,16 @@ const ClothesIndex = () => {
         },
       });
 
+      if (response.status === 403) {
+        toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+        throw new Error('Forbidden: Invalid token or access denied.');
+        navigate("profile");
+      }
+
       if (!response.ok) {
         throw new Error('Failed to delete clothing');
       }
-
+      
       setClothes(clothes.filter(item => item.clothes_id !== selectedClothingID));
       toast.success('Clothing deleted successfully', { position: 'bottom-center' });
       setIsActionModalOpen(false);
