@@ -13,10 +13,10 @@ function Profile() {
 
   const [userDetails, setUserDetails] = useState(null)
   const [showAddLocation, setShowAddLocation] = useState(false)
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   async function handleLogout() {
     try {
-      // Call function to log out of firebase, no need to call backend
       await logout()
       toast.success('User logged out successfully!', {
         position: 'top-center',
@@ -27,23 +27,63 @@ function Profile() {
       toast.error(error.message, {
         position: 'bottom-center',
       })
-
       console.error('Error logging out:', error.message)
     }
   }
 
   useEffect(() => {
     async function getUser() {
-      // This is a helper function that will check the state of the current user in firebase and fetch the user using the JWT token from localstorage and the uid
-      const user = await getUserData()
+      try {
+        const user = await getUserData();
 
-      if (user) await setUserDetails(user)
-      if(userDetails.message= "Invalid Token") handleLogout();
+        if (user) {
+          setUserDetails(user);
+        }
+
+        if (!user || userDetails.message === "Invalid Token" || !user.email) {
+          handleLogout();
+        }
+      } catch (error) {
+        console.error('Error in getUser:', error.message);
+      }
     }
+  
+    const fetchClothes = async () => {
+      const token = localStorage.getItem('token');
 
-    getUser()
-  }, [])
+      if (!token) {
+        toast.error('No token found. Please log in.', { position: 'bottom-center' });
+        navigate('/login');
+        return;
+      }
 
+      try {
+        const response = await fetch(`${BASE_URL}/api/clothes`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 403) {
+          // toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+          localStorage.removeItem('token');
+          navigate('/login');
+          return;
+        }
+
+      } catch (error) {
+        console.error('Fetch error:', error);
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+    };
+
+    fetchClothes();
+    getUser();
+  }, []);
+  
   const toggleAddLocation = () => {
     setShowAddLocation(!showAddLocation)
   }
