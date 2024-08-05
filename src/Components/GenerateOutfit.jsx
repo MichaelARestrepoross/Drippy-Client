@@ -13,6 +13,26 @@ const GenerateOutfit = (currentWeather) => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedOccasion, setSelectedOccasion] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [weatherToggle, setWeatherToggle] = useState(false)
+
+  const colorMatches = {
+    "Red": ["#FFFFFF", "#000000", "#F5F5DC", "#FFA500", "#A52A2A", "#800000", "#FF6347", "#FFD700", "#8B0000"],
+    "Yellow": ["#000000", "#FFFFFF", "#808080", "#8B4513", "#FFD700", "#FFA500", "#FF4500", "#32CD32", "#BDB76B"],
+    "Brown": ["#FFFFFF", "#000000", "#F5F5DC", "#FF4500", "#D2691E", "#8B4513", "#A52A2A", "#DEB887", "#CD853F"],
+    "Orange": ["#000000", "#FFFFFF", "#FFD700", "#FF8C00", "#FF4500", "#D2691E", "#8B4513", "#32CD32", "#800000"],
+    "Beige": ["#000000", "#FFFFFF", "#FF0000", "#D2691E", "#A52A2A", "#8B4513", "#CD853F", "#DEB887", "#FFD700"],
+    "Gray": ["#000000", "#FFFFFF", "#FF0000", "#0000FF", "#8B0000", "#808080", "#A9A9A9", "#708090", "#2F4F4F"],
+    "Lime": ["#000000", "#FFFFFF", "#FF0000", "#FFA500", "#FFFF00", "#32CD32", "#00FF00", "#8A2BE2", "#8B0000"],
+    "Tan": ["#000000", "#FFFFFF", "#FF0000", "#D2691E", "#A52A2A", "#8B4513", "#CD853F", "#DEB887", "#FFD700"],
+    "Lavender": ["#000000", "#FFFFFF", "#8A2BE2", "#9370DB", "#FF00FF", "#BA55D3", "#9932CC", "#4B0082", "#800080"],
+    "Black": ["#FFFFFF", "#FF0000", "#FFFF00", "#FFA500", "#00FF00", "#0000FF", "#A52A2A", "#800080", "#00FFFF"],
+    "White": ["#000000", "#FF0000", "#0000FF", "#8B4513", "#32CD32", "#FFD700", "#8A2BE2", "#FF4500", "#00FFFF"],
+    "Violet": ["#FFFFFF", "#FFD700", "#32CD32", "#0000FF", "#4B0082", "#8A2BE2", "#DDA0DD", "#EE82EE", "#800080"],
+    "Indigo": ["#FFFFFF", "#FFD700", "#32CD32", "#0000FF", "#4B0082", "#8A2BE2", "#DDA0DD", "#EE82EE", "#800080"],
+    "Blue": ["#FFFFFF", "#FFD700", "#32CD32", "#0000FF", "#4B0082", "#8A2BE2", "#DDA0DD", "#EE82EE", "#800080"],
+    "Green": ["#FFFFFF", "#FFD700", "#32CD32", "#0000FF", "#4B0082", "#8A2BE2", "#DDA0DD", "#EE82EE", "#800080"],
+  };
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -95,43 +115,46 @@ const GenerateOutfit = (currentWeather) => {
 
     fetchLocations();
     fetchClothes();
-  }, []);
+  }, [selectedLocation]);
 
   const handleLocationChange = (e) => {
     const selectedId = e.target.value;
     const selectedLocation = locations.find(location => location.location_id === parseInt(selectedId));
     setSelectedLocation(selectedLocation);
+    setWeatherToggle(!weatherToggle)
+    setSelectedOccasion(''); // Reset occasion when location changes
+    setSelectedColor(''); // Reset color when location changes
+    setOutfit([]); // Clear outfit when location changes
+    console.log(weatherToggle)
   };
 
   const handleOccasionChange = (e) => {
     const selectedOccasion = e.target.value;
     setSelectedOccasion(selectedOccasion);
+    setSelectedColor(''); // Reset color when occasion changes
+  };
 
-    // Filter clothes based on the selected occasion
-    const filteredOccasion = clothes.filter(item => item.prompt === selectedOccasion);
+  const handleColorChange = (e) => {
+    const selectedColor = e.target.value;
+    setSelectedColor(selectedColor);
+  };
 
-    // Check if weather data is available to further filter the clothes
-    if (selectedWeatherData) {
-      const climateFilter = (clothes, weather) => {
-        const filtered = clothes.filter(item => {
-          const tempMatch = item.min_temp <= weather.temperature && weather.temperature <= item.max_temp;
-          const humidityMatch = item.min_humidity <= weather.humidity && weather.humidity <= item.max_humidity;
-          const adjustedHumidityMatch = weather.humidity > item.max_humidity ? true : humidityMatch;
-          return tempMatch && adjustedHumidityMatch;
-        });
-        return filtered;
-      };
+  const hexToRgb = (hex) => {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return [r, g, b];
+  };
 
-      const filteredClothes = climateFilter(filteredOccasion, selectedWeatherData[0]); // Access the first element of selectedWeatherData
+  const colorDistance = (color1, color2) => {
+    const [r1, g1, b1] = hexToRgb(color1);
+    const [r2, g2, b2] = hexToRgb(color2);
+    return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2);
+  };
 
-      // Generate outfit with the filtered data
-      const outfitArray = generateOutfit(filteredClothes);
-      setOutfit(outfitArray);
-    } else {
-      // If no weather data, generate outfit with occasion filtered data only
-      const outfitArray = generateOutfit(filteredOccasion);
-      setOutfit(outfitArray);
-    }
+  const isColorMatch = (color1, color2, threshold = 50) => {
+    return colorDistance(color1, color2) < threshold;
   };
 
   const shuffleArray = (array) => {
@@ -141,30 +164,58 @@ const GenerateOutfit = (currentWeather) => {
     }
   };
 
-  const generateOutfit = (filteredClothes) => {
-    const outfit = [];
-    const addedTypes = new Set();
+  const generateOutfit = () => {
+    if (!selectedLocation || !selectedOccasion) {
+      toast.error('Please select a location and occasion.', { position: 'bottom-center' });
+      return;
+    }
 
-    // Shuffle the filtered clothes
+    // Filter clothes based on the selected occasion
+    const filteredOccasion = clothes.filter(item => item.prompt === selectedOccasion);
+
+    // Filter based on weather data if available
+    let filteredClothes = filteredOccasion;
+    if (selectedWeatherData) {
+      const climateFilter = (clothes, weather) => {
+        return clothes.filter(item => {
+          const tempMatch = item.min_temp <= weather.temperature && weather.temperature <= item.max_temp;
+          const humidityMatch = item.min_humidity <= weather.humidity && weather.humidity <= item.max_humidity;
+          const adjustedHumidityMatch = weather.humidity > item.max_humidity ? true : humidityMatch;
+          return tempMatch && adjustedHumidityMatch;
+        });
+      };
+      filteredClothes = climateFilter(filteredOccasion, selectedWeatherData[0]);
+    }
+
+    // Filter based on selected color if available
+    if (selectedColor) {
+      const colorMatch = colorMatches[selectedColor] || [];
+      filteredClothes = filteredClothes.filter(item => colorMatch.some(matchColor => isColorMatch(item.color, matchColor)));
+    }
+
+    // Generate outfit with the filtered data
+    const outfitArray = [];
+    const addedTypes = new Set();
     shuffleArray(filteredClothes);
 
-    // Add clothes in head-to-toe order
     for (const item of filteredClothes) {
       if (!addedTypes.has(item.type_name)) {
-        outfit.push(item.clothes_id);
+        outfitArray.push(item.clothes_id);
         addedTypes.add(item.type_name);
       }
     }
 
+
     // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels, Suit, Button-Up Shirt)
     const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels',`Suit`,`Button-Up Shirt`];
     outfit.sort((a, b) => {
+      
       const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
       const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;
       return typeOrder.indexOf(typeA) - typeOrder.indexOf(typeB);
     });
 
-    return outfit;
+    setOutfit(outfitArray);
   };
 
   return (
@@ -193,6 +244,8 @@ const GenerateOutfit = (currentWeather) => {
                   coordinates={{ lat: selectedLocation.x_coordinate, lng: selectedLocation.y_coordinate }}
                   selectedWeatherData={selectedWeatherData}
                   setSelectedWeatherData={setSelectedWeatherData}
+                  weatherToggle={weatherToggle}
+                  setWeatherToggle={setWeatherToggle}
                 />
                 {console.log(selectedWeatherData)}
               </div>
@@ -206,20 +259,52 @@ const GenerateOutfit = (currentWeather) => {
         <div className="text-center mb-4">
           <select 
             onChange={handleOccasionChange} 
-            className="bg-white border border-gray-300 rounded px-4 py-2 w-1/2 text-center"
+            value={selectedOccasion}
+            disabled={!selectedLocation}
+            className="bg-white border border-gray-300 rounded px-4 py-2 w-1/2 text-center mb-4"
           >
             <option value="">Select Occasion</option>
             <option value="Casual">Casual</option>
             <option value="Work">Work</option>
             <option value="Business Casual">Business Casual</option>
           </select>
+          <select 
+            onChange={handleColorChange} 
+            value={selectedColor}
+            disabled={!selectedLocation || !selectedOccasion}
+            className="bg-white border border-gray-300 rounded px-4 py-2 w-1/2 text-center mb-4"
+          >
+            <option value="">Select Color</option>
+            <option value="Red">Red</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Brown">Brown</option>
+            <option value="Orange">Orange</option>
+            <option value="Beige">Beige</option>
+            <option value="Gray">Gray</option>
+            <option value="Lime">Lime</option>
+            <option value="Tan">Tan</option>
+            <option value="Lavender">Lavender</option>
+            <option value="Black">Black</option>
+            <option value="White">White</option>
+            <option value="Violet">Violet</option>
+            <option value="Indigo">Indigo</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+          </select>
         </div>
+        <button 
+          onClick={generateOutfit}
+          disabled={!selectedLocation || !selectedOccasion}
+          className="bg-purple-700 text-white px-4 py-2 rounded"
+        >
+          Generate Outfit
+        </button>
         {loading ? (
           <p className="text-center">Loading...</p>
         ) : error ? (
           <p className="text-center">{error}</p>
         ) : (
-          <div className="outfit flex flex-col items-center">
+          <div className="outfit flex flex-col items-center mt-4">
             {clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
               <ClothesCard key={item.clothes_id} {...item} />
             ))}

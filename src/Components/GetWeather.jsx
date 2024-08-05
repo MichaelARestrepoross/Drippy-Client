@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }) => {
+const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData, weatherToggle, setWeatherToggle }) => {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const TOMORROW_IO_API_KEY = import.meta.env.VITE_TOMORROW_IO_API_KEY;
@@ -46,7 +46,7 @@ const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }
 
       fetchWeather();
     }
-  }, []);
+  }, [weatherToggle]);
 
   return (
     <div>
@@ -57,7 +57,7 @@ const GetWeather = ({ coordinates, selectedWeatherData, setSelectedWeatherData }
           {weatherData.map((weather, index) => (
             <div key={index}>
               <p>Date and Time: {weather.formattedTime}</p>
-              <p>Temperature: {weather.temperature} °F</p>
+              <p>Temperature: {Math.round(weather.temperature)} °F</p>
               <p>Precipitation Probability: {weather.precipitationProbability} %</p>
               <p>Humidity: {weather.humidity} %</p>
               <hr />
