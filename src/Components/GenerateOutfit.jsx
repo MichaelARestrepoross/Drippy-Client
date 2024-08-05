@@ -46,6 +46,7 @@ const GenerateOutfit = (currentWeather) => {
       if (!token) {
         toast.error('No token found. Please log in.', { position: 'bottom-center' });
         setLoading(false);
+        navigate("/profile");
         return;
       }
 
@@ -59,9 +60,8 @@ const GenerateOutfit = (currentWeather) => {
         });
 
         if (response.status === 403) {
-          toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
-          throw new Error('Forbidden: Invalid token or access denied.');
           navigate("/profile")
+          throw new Error('Forbidden: Invalid token or access denied.Please log in');
         }
 
         if (!response.ok) {
@@ -85,6 +85,7 @@ const GenerateOutfit = (currentWeather) => {
       if (!token) {
         toast.error('No token found. Please log in.', { position: 'bottom-center' });
         setLoading(false);
+        navigate("/profile");
         return;
       }
 
@@ -98,9 +99,8 @@ const GenerateOutfit = (currentWeather) => {
         });
 
         if (response.status === 403) {
-          toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
-          throw new Error('Forbidden: Invalid token or access denied.');
           navigate("/profile");
+          throw new Error('Forbidden: Invalid token or access denied.');
         }
 
         if (!response.ok) {
