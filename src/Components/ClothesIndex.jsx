@@ -28,6 +28,7 @@ const ClothesIndex = () => {
       if (!token) {
         toast.error('No token found. Please log in.', { position: 'bottom-center' });
         setLoading(false);
+        navigate("/profile");
         return;
       }
 
@@ -41,9 +42,9 @@ const ClothesIndex = () => {
         });
 
         if (response.status === 403) {
-          toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
-          throw new Error('Forbidden: Invalid token or access denied.');
           navigate("/profile");
+          toast.error('Forbidden: Invalid token or access denied.Please log in', { position: 'bottom-center' });
+          throw new Error('Forbidden: Invalid token or access denied.');
         }
 
         if (!response.ok) {
@@ -89,6 +90,7 @@ const ClothesIndex = () => {
 
     if (!token) {
       toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      navigate("/profile");
       return;
     }
 
@@ -102,9 +104,8 @@ const ClothesIndex = () => {
       });
 
       if (response.status === 403) {
-        toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+        navigate("/profile");
         throw new Error('Forbidden: Invalid token or access denied.');
-        navigate("profile");
       }
 
       if (!response.ok) {

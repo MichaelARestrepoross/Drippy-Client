@@ -71,6 +71,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
 
     if (!token) {
       toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      navigate("/profile");
       return;
     }
 
@@ -85,9 +86,9 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       });
 
       if (response.status === 403) {
-        toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+        navigate("/profile");
+        toast.error('Forbidden: Invalid token or access denied. please log in', { position: 'bottom-center' });
         throw new Error('Forbidden: Invalid token or access denied.');
-        navigate("profile");
       }
 
       if (!response.ok) {
