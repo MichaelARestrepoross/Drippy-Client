@@ -3,7 +3,8 @@ import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Ensure the modal root element is set
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 Modal.setAppElement('#root'); // Adjust according to your app's root element
 
 const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
@@ -47,10 +48,10 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       }
     };
 
-    fetchOptions('http://localhost:3003/api/types', setTypes);
-    fetchOptions('http://localhost:3003/api/materials', setMaterials);
-    fetchOptions('http://localhost:3003/api/temperature-ranges', setTemperatureRanges);
-    fetchOptions('http://localhost:3003/api/humidity-levels', setHumidityLevels);
+    fetchOptions(`${BASE_URL}/api/types`, setTypes);
+    fetchOptions(`${BASE_URL}/api/materials`, setMaterials);
+    fetchOptions(`${BASE_URL}/api/temperature-ranges`, setTemperatureRanges);
+    fetchOptions(`${BASE_URL}/api/humidity-levels`, setHumidityLevels);
   }, []);
 
   const handleChange = (e) => {
@@ -71,7 +72,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:3003/api/clothes', {
+      const response = await fetch(`${BASE_URL}/api/clothes`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -106,7 +107,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       className="fixed inset-0 flex items-center justify-center p-4"
       overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50"
     >
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative max-h-[80vh] overflow-y-auto mt-16">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"

@@ -11,7 +11,7 @@ const ClothesCard = ({ id, image_base64, image_url, prompt, color, type_name, ma
 
   return (
     <div onClick={onClick} className="bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-dark-lg transform transition-transform duration-300 hover:scale-105 relative">
-      <img src={imageUrl} alt={prompt} className="h-80 w-100 object-cover" />
+      <img src={imageUrl} alt={prompt} className="h-80 w-full object-cover" />
       {/* <h3 className="text-xl font-bold mb-2 text-purple-700">{color} {type_name}</h3> */}
 
       <div className={`absolute inset-0 bg-white bg-opacity-90 p-4 transition-opacity duration-300 ${showDetails ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>

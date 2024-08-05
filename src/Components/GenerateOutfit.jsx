@@ -34,6 +34,8 @@ const GenerateOutfit = (currentWeather) => {
     "Green": ["#FFFFFF", "#FFD700", "#32CD32", "#0000FF", "#4B0082", "#8A2BE2", "#DDA0DD", "#EE82EE", "#800080"],
   };
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   useEffect(() => {
     const fetchClothes = async () => {
       const token = localStorage.getItem('token');
@@ -45,7 +47,7 @@ const GenerateOutfit = (currentWeather) => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/clothes', {
+        const response = await fetch(`${BASE_URL}/api/clothes`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -83,7 +85,7 @@ const GenerateOutfit = (currentWeather) => {
       }
 
       try {
-        const response = await fetch('http://localhost:3003/api/locations', {
+        const response = await fetch(`${BASE_URL}/api/locations`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -203,9 +205,11 @@ const GenerateOutfit = (currentWeather) => {
       }
     }
 
-    // Ensure IDs are in head-to-toe order
-    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels'];
-    outfitArray.sort((a, b) => {
+
+    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels, Suit, Button-Up Shirt)
+    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels',`Suit`,`Button-Up Shirt`];
+    outfit.sort((a, b) => {
+      
       const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
       const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;
       return typeOrder.indexOf(typeA) - typeOrder.indexOf(typeB);
@@ -215,7 +219,7 @@ const GenerateOutfit = (currentWeather) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-purple-300 min-h-screen flex flex-col items-center justify-center">
+    <div className="container mx-auto px-4 py-8 bg-purple-400 min-h-screen flex flex-col items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full mb-8">
         <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Locations</h1>
         {loading ? (
