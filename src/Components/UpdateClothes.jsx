@@ -32,6 +32,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
       const token = localStorage.getItem('token');
       if (!token) {
         toast.error('No token found. Please log in.', { position: 'bottom-center' });
+        navigate("/profile");
         return;
       }
 
@@ -45,9 +46,9 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
         });
 
         if (response.status === 403) {
-          toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
-          throw new Error('Forbidden: Invalid token or access denied.');
           navigate("/profile");
+          toast.error('Forbidden: Invalid token or access denied.Please log in.', { position: 'bottom-center' });
+          throw new Error('Forbidden: Invalid token or access denied.');
         }
 
         if (!response.ok) {
@@ -102,6 +103,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
 
     if (!token) {
       toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      navigate("/profile");
       return;
     }
 
@@ -116,9 +118,9 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
       });
 
       if (response.status === 403) {
-        toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
-        throw new Error('Forbidden: Invalid token or access denied.');
         navigate("/profile");
+        toast.error('Forbidden: Invalid token or access denied.Please log in', { position: 'bottom-center' });
+        throw new Error('Forbidden: Invalid token or access denied.');
       }
 
       if (!response.ok) {

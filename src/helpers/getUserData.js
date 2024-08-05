@@ -16,7 +16,7 @@ export const getUserData = () => {
 
         //helper function to do the actual fetched. abstracted because it is used in two placees in this code
         const retrievedUser = await fetchUser(user, token)
-
+        
         // this is the same as a return but returns a promise
         resolve(retrievedUser)
       } catch (error) {
