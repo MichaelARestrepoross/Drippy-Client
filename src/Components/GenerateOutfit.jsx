@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
 import GetWeather from './GetWeather';
+import { useNavigate } from 'react-router-dom';
 
 const GenerateOutfit = (currentWeather) => {
   const [clothes, setClothes] = useState([]);
@@ -15,6 +16,8 @@ const GenerateOutfit = (currentWeather) => {
   const [selectedOccasion, setSelectedOccasion] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [weatherToggle, setWeatherToggle] = useState(false)
+
+  const navigate = useNavigate();
 
   const colorMatches = {
     "Red": ["#FFFFFF", "#000000", "#F5F5DC", "#FFA500", "#A52A2A", "#800000", "#FF6347", "#FFD700", "#8B0000"],
@@ -58,6 +61,7 @@ const GenerateOutfit = (currentWeather) => {
         if (response.status === 403) {
           toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
           throw new Error('Forbidden: Invalid token or access denied.');
+          navigate("/profile")
         }
 
         if (!response.ok) {
@@ -96,6 +100,7 @@ const GenerateOutfit = (currentWeather) => {
         if (response.status === 403) {
           toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
           throw new Error('Forbidden: Invalid token or access denied.');
+          navigate("/profile");
         }
 
         if (!response.ok) {
