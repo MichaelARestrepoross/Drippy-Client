@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,6 +24,8 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
   const [materials, setMaterials] = useState([]);
   const [temperatureRanges, setTemperatureRanges] = useState([]);
   const [humidityLevels, setHumidityLevels] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (initialValues && Object.keys(initialValues).length > 0) {
@@ -84,6 +87,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
       if (response.status === 403) {
         toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
         throw new Error('Forbidden: Invalid token or access denied.');
+        navigate("profile");
       }
 
       if (!response.ok) {
