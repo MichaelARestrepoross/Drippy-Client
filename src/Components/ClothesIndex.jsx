@@ -5,6 +5,7 @@ import FilterBox from './FilterBox';
 import ColorFilterModal from './ColorFilterModal';
 import UpdateClothes from './UpdateClothes';
 import "./ClothesIndex.css"
+import { useNavigate } from 'react-router-dom';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -17,6 +18,8 @@ const ClothesIndex = () => {
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -40,6 +43,7 @@ const ClothesIndex = () => {
         if (response.status === 403) {
           toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
           throw new Error('Forbidden: Invalid token or access denied.');
+          navigate("/profile");
         }
 
         if (!response.ok) {
