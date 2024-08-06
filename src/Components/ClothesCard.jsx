@@ -24,7 +24,7 @@ const ClothesCard = ({ id, image_base64, image_url, prompt, color, type_name, ma
       </div>
       <button
         onClick={handleToggleDetails}
-        className={`absolute bottom-4 right-4 px-4 py-2 rounded-full text-white font-bold transition-colors duration-300 ${showDetails ? 'bg-red-500' : 'bg-purple-500'}`}
+        className={`absolute top-4 right-4 px-4 py-2 rounded-full text-white font-bold transition-colors duration-300 ${showDetails ? 'bg-gray-500' : 'bg-purple-500'}`}
       >
         {showDetails ? 'Close Details' : 'Details'}
       </button>

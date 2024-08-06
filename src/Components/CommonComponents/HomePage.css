@@ -1,6 +1,7 @@
 .home-wrapper {
   position: relative;
   overflow: hidden;
+  height: 100vh;
 }
 
 .home-wrapper video {
@@ -10,14 +11,41 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* z-index: -1;  */
 }
 
 .welcome-wrapper {
-  /* background: rgba(255, 255, 255, 0.9); */
-  background: white;
+  background: rgba(255, 255, 255, 1);
   padding: 20px;
   border-radius: 10px;
-  width: 600px;
-  padding-bottom: 60px;
+  width: 50%;
+  max-width: 500px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; 
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+/* .welcome-wrapper button {
+  width: 100%; 
+  max-width: 400px;
+  margin: 10px auto; 
+  display: block;
+} */
+
+@media (max-width: 768px) {
+  .welcome-wrapper {
+    width: 90%;
+    background: rgba(255, 255, 255, 1);
+  }
+
+  .home-wrapper video {
+    object-fit: cover;
+  }
+
+  .welcome-wrapper button {
+    width: 100%; 
+    max-width: 300px;
+    margin: 10px auto; 
+  }
 }

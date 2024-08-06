@@ -6,7 +6,7 @@
   background-size: 700px; 
   background-position: center top;
   background-repeat: no-repeat;
-  height: 75vh; 
+  height: 70vh; 
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -32,7 +32,7 @@
 
 @keyframes slideDown {
   0% {
-    transform: translateY(-75vh); 
+    transform: translateY(-70vh); 
   }
   100% {
     transform: translateY(0); 
@@ -41,9 +41,25 @@
 
 @keyframes bounce {
   0%, 100% {
-    transform: translateY(0); 
+    transform: translateY(5); 
   }
   50% {
-    transform: translateY(-10px); 
+    transform: translateY(5px); 
+  }
+}
+
+@media (max-width: 768px) {
+  .top-background {
+    background-size: 400px; 
+    height: 50vh;
+  }
+
+  .button-container {
+    margin-top: 0;
+    gap: 0.5rem; 
+  }
+
+  .text-shadow {
+    font-size: 1.5rem; 
   }
 }

@@ -9,10 +9,39 @@
     min-height: 100vh; 
 }
 
-button {
-    padding: 8px 16px;  
-    border-radius: 8px;
-    border: none; 
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; 
+.my-clothing-container h1{
+    margin-left: 3rem;
+}
+
+.my-clothing-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button-group{
+    margin-right: 3rem;
+}
+
+@media (max-width: 768px) {
+  .my-clothing-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .my-clothing-container h1 {
+    margin-bottom: 5px;
+    margin-left: 0; 
+  }
+  .button-group{
+    margin-right: 0;
+  }
+  .my-clothing-container .button-group {
+    display: flex;
+    justify-content: center;
+    width: 100%; 
+    gap: 1rem; 
+    margin-top: 1rem; 
+  }
 }

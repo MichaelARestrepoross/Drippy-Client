@@ -24,10 +24,8 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-purple-500">
-      <section className="top-background">
-        {/* The background with the logo will cover this section */}
+      <section className="top-background mb-10">
       </section>
-
       <div className="button-container">
         <button
           onClick={handleGetStarted}
