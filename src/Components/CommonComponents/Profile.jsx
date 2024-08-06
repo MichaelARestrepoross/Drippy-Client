@@ -129,7 +129,7 @@ function Profile() {
 
             <button
               onClick={toggleAddLocation}
-              className="w-full py-3 px-6 bg-purple-400 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 mb-4"
+              className="w-full py-3 px-6 bg-purple-400 text-white rounded-lg shadow-md hover:bg-gray-600 mb-4"
             >
               {showAddLocation ? 'Close Add Location' : 'Add a Location'}
             </button>

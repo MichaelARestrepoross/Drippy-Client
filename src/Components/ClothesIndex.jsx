@@ -131,7 +131,7 @@ const ClothesIndex = () => {
 
   return (
     <div className="container mx-auto px-8">
-      <div className="filters-bar flex items-center justify-center gap-8 mb-6">
+      <div className="filters-bar">
         <span
           onClick={() => setIsColorModalOpen(true)}
           className="filter-link"

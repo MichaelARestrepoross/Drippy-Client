@@ -109,7 +109,7 @@ function ImageHandler() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-500 to-white min-h-screen flex items-center justify-center">
       <div className="container mx-auto px-4 py-6 bg-white shadow-dark-lg rounded-lg max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Add Clothes</h1>
+        <h1 className="text-3xl font-bold text-purple-600 text-center mb-6">Add Clothes</h1>
         
         <form onSubmit={handleUrlSubmit} className="mb-6">
           <div className="flex flex-col gap-4">
@@ -122,7 +122,7 @@ function ImageHandler() {
             />
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+              className="w-full py-3 px-6 bg-purple-600 text-white rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Add New Clothes
             </button>
@@ -138,7 +138,7 @@ function ImageHandler() {
           />
           <button
             onClick={() => setIsCameraOpen(true)}
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition w-full"
+            className="w-full py-3 px-6 bg-purple-400 text-white rounded-lg shadow-md hover:bg-gray-600"
           >
             Open Camera
           </button>
@@ -184,7 +184,7 @@ function ImageHandler() {
         <div className="text-center mt-6">
           <button
             onClick={() => navigate('/wardrobe')}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition w-full"
+            className="w-full py-3 px-6 text-white rounded-lg shadow-dark-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Go to Wardrobe
           </button>

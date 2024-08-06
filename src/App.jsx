@@ -58,7 +58,7 @@ function App() {
     <div>
       <Header/>
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/profile" /> : <Login />} />
+        {/* <Route path="/" element={user ? <Navigate to="/profile" /> : <Login />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={user ? <Profile /> : <Login />} />
@@ -68,7 +68,7 @@ function App() {
         <Route path="/footer" element={<Footer />} />
         <Route path="/header" element={<Header />} />
         <Route path="/homepage" element={user ?<HomePage />:<Login /> } />
-        <Route path="/landingpage" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/signinwithgoogle" element={<SignInWithGoogle />} />
         <Route path="/about" element={<AboutUs />} />
         

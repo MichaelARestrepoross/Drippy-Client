@@ -120,16 +120,16 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
   const Modal = ({ children, onClose }) => {
     return ReactDOM.createPortal(
       <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-        <div className="bg-white p-8 pt-8 pl-8 pr-8 rounded shadow-lg relative">
-          <button 
+        <div className="bg-white p-8 pt-8 pl-8 pr-8 rounded shadow-dark-lg relative" >
+          {/* <button 
             onClick={() => {
               onClose();
               closeCamera();
             }} 
-            className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            className="absolute top-4 right-4 bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
           >
             Close
-          </button>
+          </button> */}
           {children}
         </div>
       </div>,
@@ -141,18 +141,24 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
     <div>
       {isCameraOpen && (
         <Modal onClose={() => setIsCameraOpen(false)}>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center ">
             {isRequestingPermission ? (
               <div className="flex items-center justify-center h-64">
                 <p>Please grant camera access...</p>
               </div>
             ) : (
               <>
-                <video ref={videoRef} className="w-full max-w-md mb-4" autoPlay playsInline></video>
-                <div>
+                <video ref={videoRef} className="w-full max-w-md mb-4 shadow-dark-lg" autoPlay playsInline></video>
+                <div className='text-center'>
+                  <button 
+                    onClick={switchCamera}
+                    className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition ml-4 mb-2 shadow-dark-lg"
+                  >
+                    Switch Camera
+                  </button>
                   <button 
                     onClick={takePicture}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition"
+                    className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition ml-4 mb-2 shadow-dark-lg"
                   >
                     Take Picture
                   </button>
@@ -160,15 +166,9 @@ function OpenCamera({ isCameraOpen, setIsCameraOpen, setCapturedImage }) {
                     setIsCameraOpen(false);
                     closeCamera();
                     }}
-                    className="bg-red-500 text-white px-10 py-2 rounded hover:bg-red-600 transition ml-4"
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition ml-4 mb-2 shadow-dark-lg"
                   >
                     Close Camera
-                  </button>
-                  <button 
-                    onClick={switchCamera}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition ml-4"
-                  >
-                    Switch Camera
                   </button>
                 </div>
               </>

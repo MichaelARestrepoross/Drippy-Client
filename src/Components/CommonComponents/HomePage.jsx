@@ -17,25 +17,24 @@ function HomePage() {
         <source src={goopVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div className="welcome-wrapper relative z-10 flex flex-col items-center">
-        {/* <h1 className="text-4xl font-bold mb-8 text-purple-700">Welcome to Drippy</h1> */}
+      <div className="welcome-wrapper relative z-10 flex flex-col items-center shadow-dark-lg">
         <img src={logo} alt="Logo" />
-        <div className="space-y-4 sm:space-x-0 sm:flex sm:flex-col">
+        <div className="home-buttons-wrapper w-full max-w-lg flex flex-col items-center space-y-4">
           <button 
             onClick={() => handleNavigation('/wardrobe')}
-            className="w-64 py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300"
+            className="w-full py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300 shadow-dark-lg"
           >
             Go to Wardrobe
           </button>
           <button 
             onClick={() => handleNavigation('/addclothing')}
-            className="w-64 py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300"
+            className="w-full py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300 shadow-dark-lg"
           >
             Add clothing
           </button>
           <button 
             onClick={() => handleNavigation('/generateoutfit')}
-            className="w-64 py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300"
+            className="w-full py-4 bg-purple-600 text-white font-bold rounded hover:bg-purple-700 transition duration-300 shadow-dark-lg"
           >
             Generate Today's Outfit
           </button>
