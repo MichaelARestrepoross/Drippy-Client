@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,11 +25,14 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
   const [temperatureRanges, setTemperatureRanges] = useState([]);
   const [humidityLevels, setHumidityLevels] = useState([]);
 
+ const navigate =useNavigate();
+
   useEffect(() => {
     const fetchClothesData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
         toast.error('No token found. Please log in.', { position: 'bottom-center' });
+        navigate("/profile");
         return;
       }
 
@@ -42,7 +46,8 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
         });
 
         if (response.status === 403) {
-          toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+          navigate("/profile");
+          toast.error('Forbidden: Invalid token or access denied.Please log in.', { position: 'bottom-center' });
           throw new Error('Forbidden: Invalid token or access denied.');
         }
 
@@ -98,6 +103,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
 
     if (!token) {
       toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      navigate("/profile");
       return;
     }
 
@@ -112,7 +118,8 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
       });
 
       if (response.status === 403) {
-        toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+        navigate("/profile");
+        toast.error('Forbidden: Invalid token or access denied.Please log in', { position: 'bottom-center' });
         throw new Error('Forbidden: Invalid token or access denied.');
       }
 

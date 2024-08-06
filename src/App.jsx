@@ -14,6 +14,7 @@ import Profile from './Components/CommonComponents/Profile';
 import Register from './Components/CommonComponents/Register';
 import SignInWithGoogle from './Components/CommonComponents/SignInWithGoogle';
 import Test from './Components/CommonComponents/Test';
+import AboutUs from './Components/CommonComponents/AboutUs';
 
 // Import Other Components
 import ClothesCard from './Components/ClothesCard';
@@ -69,6 +70,8 @@ function App() {
         <Route path="/homepage" element={user ?<HomePage />:<Login /> } />
         <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/signinwithgoogle" element={<SignInWithGoogle />} />
+        <Route path="/about" element={<AboutUs />} />
+        
 
         {/* Other Components */}
         <Route path="/clothesform" element={<ClothesForm />} />

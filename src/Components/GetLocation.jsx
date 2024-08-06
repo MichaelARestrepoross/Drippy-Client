@@ -16,6 +16,7 @@ const GetLocation = () => {
 
     if (!token) {
       toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      navigate("/profile");
       return;
     }
 
@@ -42,7 +43,7 @@ const GetLocation = () => {
           });
 
           if (response.status === 403) {
-            toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+            toast.error('Forbidden: Invalid token or access denied.Please log in', { position: 'bottom-center' });
             return;
           }
 

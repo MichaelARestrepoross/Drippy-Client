@@ -5,6 +5,7 @@ import FilterBox from './FilterBox';
 import ColorFilterModal from './ColorFilterModal';
 import UpdateClothes from './UpdateClothes';
 import "./ClothesIndex.css"
+import { useNavigate } from 'react-router-dom';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -18,6 +19,8 @@ const ClothesIndex = () => {
   const [selectedClothingID, setSelectedClothingID] = useState(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchClothes = async () => {
       const token = localStorage.getItem('token');
@@ -25,6 +28,7 @@ const ClothesIndex = () => {
       if (!token) {
         toast.error('No token found. Please log in.', { position: 'bottom-center' });
         setLoading(false);
+        navigate("/profile");
         return;
       }
 
@@ -38,7 +42,8 @@ const ClothesIndex = () => {
         });
 
         if (response.status === 403) {
-          toast.error('Forbidden: Invalid token or access denied.', { position: 'bottom-center' });
+          navigate("/profile");
+          toast.error('Forbidden: Invalid token or access denied.Please log in', { position: 'bottom-center' });
           throw new Error('Forbidden: Invalid token or access denied.');
         }
 
@@ -85,6 +90,7 @@ const ClothesIndex = () => {
 
     if (!token) {
       toast.error('No token found. Please log in.', { position: 'bottom-center' });
+      navigate("/profile");
       return;
     }
 
@@ -97,10 +103,15 @@ const ClothesIndex = () => {
         },
       });
 
+      if (response.status === 403) {
+        navigate("/profile");
+        throw new Error('Forbidden: Invalid token or access denied.');
+      }
+
       if (!response.ok) {
         throw new Error('Failed to delete clothing');
       }
-
+      
       setClothes(clothes.filter(item => item.clothes_id !== selectedClothingID));
       toast.success('Clothing deleted successfully', { position: 'bottom-center' });
       setIsActionModalOpen(false);
