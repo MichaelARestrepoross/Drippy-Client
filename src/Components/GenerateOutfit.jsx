@@ -277,7 +277,7 @@ const GenerateOutfit = (currentWeather) => {
             <option value="Work">Work</option>
             <option value="Business Casual">Business Casual</option>
           </select>
-          <select 
+          {/* <select 
             onChange={handleColorChange} 
             value={selectedColor}
             disabled={!selectedLocation || !selectedOccasion}
@@ -299,7 +299,7 @@ const GenerateOutfit = (currentWeather) => {
             <option value="Indigo">Indigo</option>
             <option value="Blue">Blue</option>
             <option value="Green">Green</option>
-          </select>
+          </select> */}
         </div>
         <button 
           onClick={generateOutfit}

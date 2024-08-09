@@ -87,7 +87,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
 
       if (response.status === 403) {
         navigate("/profile");
-        toast.error('Forbidden: Invalid token or access denied. please log in', { position: 'bottom-center' });
+        toast.error('Forbidden: Invalid token or access denied. Please log in', { position: 'bottom-center' });
         throw new Error('Forbidden: Invalid token or access denied.');
       }
 
@@ -172,7 +172,7 @@ const ClothesForm = ({ initialValues = {}, isOpen, onClose }) => {
               <option value="">Select Temperature Range</option>
               {temperatureRanges.map((range) => (
                 <option key={range.temperature_range_id} value={range.temperature_range_id}>
-                  {range.temperature_range_name} ({range.min_temp}°C - {range.max_temp}°C)
+                  {range.temperature_range_name} ({range.min_temp}°F - {range.max_temp}°F)
                 </option>
               ))}
             </select>

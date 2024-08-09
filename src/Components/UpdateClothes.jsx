@@ -204,7 +204,7 @@ const UpdateClothes = ({ clothesId, isOpen, onClose }) => {
               <option value="">Select Temperature Range</option>
               {temperatureRanges.map((range) => (
                 <option key={range.temperature_range_id} value={range.temperature_range_id}>
-                  {range.temperature_range_name} ({range.min_temp}°C - {range.max_temp}°C)
+                  {range.temperature_range_name} ({range.min_temp}°F - {range.max_temp}°F)
                 </option>
               ))}
             </select>
