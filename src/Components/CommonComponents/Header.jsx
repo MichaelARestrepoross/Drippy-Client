@@ -22,6 +22,11 @@ const Header = () => {
     setIsOpen(false);
   };
 
+  const handleNavigateAbout = () => {
+    navigate('/about');
+    setIsOpen(false);
+  };
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen); 
   };
@@ -51,7 +56,7 @@ const Header = () => {
             <span className="mr-2">Profile</span>
           </button>
           <button
-            onClick={handleNavigateProfile}
+            onClick={handleNavigateAbout}
             className="flex items-center text-2xl text-gray-700 bg-transparent border-none cursor-pointer transform transition-transform duration-300 ease-in-out hover:text-purple-600 hover:scale-150"
           >
             <span className="mr-2">About</span>
