@@ -12,7 +12,7 @@ function AboutUs() {
       </div>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-12 px-4 w-full max-w-screen-xl mb-12">
         {[{
-          initials: 'JG',
+          initials: 'CM',
           name: 'Chris Miranda',
           role: 'Software Engineer',
           linkedin: 'https://www.linkedin.com/in/c-miranda1',
