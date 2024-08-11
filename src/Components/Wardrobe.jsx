@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import ClothesIndex from './ClothesIndex';
 import './Wardrobe.css';
+import Footer from './CommonComponents/Footer';
 
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -16,6 +17,7 @@ function Wardrobe() {
   };
 
   return (
+    <div>
     <div className="wardrobe-wrapper bg-purple-300 p-1 py-4">
       <div className="my-clothing-container">
         <h1 className="text-7xl font-bold text-white text-shadow">My Wardrobe</h1>
@@ -35,6 +37,8 @@ function Wardrobe() {
         </div>
       </div>
       <ClothesIndex />
+    </div>
+    <Footer/>
     </div>
   );
 }
