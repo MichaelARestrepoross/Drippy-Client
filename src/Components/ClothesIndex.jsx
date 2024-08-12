@@ -9,11 +9,11 @@ import { useNavigate } from 'react-router-dom';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const ClothesIndex = () => {
+const ClothesIndex = ({selectedType, setSelectedType,selectedColor, setSelectedColor}) => {
   const [clothes, setClothes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
+//   const [selectedType, setSelectedType] = useState(null);
+//   const [selectedColor, setSelectedColor] = useState(null);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [selectedClothingID, setSelectedClothingID] = useState(null);
