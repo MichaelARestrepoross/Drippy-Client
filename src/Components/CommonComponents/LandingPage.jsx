@@ -19,7 +19,7 @@ const LandingPage = () => {
   };
 
   const handleGoHome = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   return (
