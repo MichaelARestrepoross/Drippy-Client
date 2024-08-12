@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import ClothesIndex from './ClothesIndex';
 import './Wardrobe.css';
 import Footer from './CommonComponents/Footer';
@@ -6,8 +7,11 @@ import Footer from './CommonComponents/Footer';
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; 
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
+
 function Wardrobe() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [selectedType, setSelectedType] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
 
   const handleAddClothing = () => {
     navigate('/addclothing');
@@ -36,9 +40,17 @@ function Wardrobe() {
           </button>
         </div>
       </div>
-      <ClothesIndex />
+      <ClothesIndex 
+        selectedType = {selectedType} 
+        setSelectedType ={setSelectedType} 
+        selectedColor = {selectedColor} 
+        setSelectedColor ={setSelectedColor} 
+      />
     </div>
-    <Footer/>
+    <Footer 
+        selectedType = {selectedType} 
+        selectedColor = {selectedColor} 
+    />
     </div>
   );
 }
