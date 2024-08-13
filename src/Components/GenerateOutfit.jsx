@@ -174,16 +174,16 @@ const GenerateOutfit = (currentWeather) => {
   };
 
   const generateOutfit = () => {
-    setGenerateClicked(true); // Set the generate button clicked state
-
+    setGenerateClicked(true);
+  
     if (!selectedLocation || !selectedOccasion) {
       toast.error('Please select a location and occasion.', { position: 'bottom-center' });
       return;
     }
-
+  
     // Filter clothes based on the selected occasion
     const filteredOccasion = clothes.filter(item => item.prompt === selectedOccasion);
-
+  
     // Filter based on weather data if available
     let filteredClothes = filteredOccasion;
     if (selectedWeatherData) {
@@ -197,35 +197,57 @@ const GenerateOutfit = (currentWeather) => {
       };
       filteredClothes = climateFilter(filteredOccasion, selectedWeatherData[0]);
     }
-
+  
     // Filter based on selected color if available
     if (selectedColor) {
       const colorMatch = colorMatches[selectedColor] || [];
       filteredClothes = filteredClothes.filter(item => colorMatch.some(matchColor => isColorMatch(item.color, matchColor)));
     }
-
-    // Generate outfit with the filtered data
+  
+    // Shuffle the clothes to introduce randomness
+    shuffleArray(filteredClothes);
+  
+    // Reset state
     const outfitArray = [];
     const addedTypes = new Set();
-    shuffleArray(filteredClothes);
-
+  
+    // Define conflict rules
+    const conflictRules = {
+      "Pants": ["Shorts"],
+      "Shorts": ["Pants"],
+      "T-shirt": ["Sweater", "Tank-Top"],
+      "Sweater": ["T-shirt", "Tank-Top"],
+      "Tank-Top": ["T-shirt", "Sweater"],
+      "Sandals": ["Sneakers", "Boots", "Heels"],
+      "Sneakers": ["Sandals", "Boots", "Heels"],
+      "Boots": ["Sandals", "Sneakers", "Heels"],
+      "Heels": ["Sandals", "Sneakers", "Boots"]
+    };
+  
+    // Create an outfit ensuring only one item per type and respecting conflict rules
     for (const item of filteredClothes) {
-      if (!addedTypes.has(item.type_name)) {
-        outfitArray.push(item.clothes_id);
-        addedTypes.add(item.type_name);
+      const typeName = item.type_name;
+  
+      // Check for conflicts with already added types
+      const conflicts = conflictRules[typeName] || [];
+      if (!addedTypes.has(typeName) && !conflicts.some(conflict => addedTypes.has(conflict))) {
+        outfitArray.push(item);
+        addedTypes.add(typeName);
       }
     }
-
-    // Ensure IDs are in head-to-toe order (assuming the order is: T-shirt, Jacket, Sweater, Shorts, Pants, Tank-Top, Sandals, Sneakers, Boots, Heels, Suit, Button-Up Shirt)
-    const typeOrder = ['T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels', 'Suit', 'Button-Up Shirt'];
-    outfitArray.sort((a, b) => {
-      const typeA = filteredClothes.find(item => item.clothes_id === a).type_name;
-      const typeB = filteredClothes.find(item => item.clothes_id === b).type_name;
-      return typeOrder.indexOf(typeA) - typeOrder.indexOf(typeB);
+  
+    // Ensure IDs are in head-to-toe order using the typeOrder array
+    const typeOrder = ['Button-Up Shirt','T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Sandals', 'Sneakers', 'Boots', 'Heels'];
+  
+    const sortedOutfit = outfitArray.sort((a, b) => {
+      const typeA = typeOrder.indexOf(a.type_name);
+      const typeB = typeOrder.indexOf(b.type_name);
+      return typeA - typeB;
     });
-
-    setOutfit(outfitArray);
+  
+    setOutfit(sortedOutfit.map(item => item.clothes_id));
   };
+  
 
   return (
     <div className="mx-auto px-4 py-8 bg-purple-400 min-h-screen flex flex-col items-center justify-center background-drippy">
@@ -327,9 +349,17 @@ const GenerateOutfit = (currentWeather) => {
               </a>
               </div>
             ) : (
-              clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
-                <ClothesCard key={item.clothes_id} {...item}/>
-              ))
+              clothes
+                .filter(item => outfit.includes(item.clothes_id))
+                .sort((a, b) => {
+                  const typeOrder = ['Button-Up Shirt','T-shirt', 'Jacket', 'Sweater', 'Tank-Top', 'Shorts', 'Pants', 'Dress Shoes', 'Sandals', 'Sneakers', 'Boots', 'Heels'];
+                  const typeA = typeOrder.indexOf(a.type_name);
+                  const typeB = typeOrder.indexOf(b.type_name);
+                  return typeA - typeB;
+                })
+                .map(item => (
+                  <ClothesCard key={item.clothes_id} {...item} />
+                ))
             )}
           </div>
         )}
