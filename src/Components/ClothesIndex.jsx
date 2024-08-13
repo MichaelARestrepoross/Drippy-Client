@@ -144,7 +144,7 @@ const ClothesIndex = ({selectedType, setSelectedType,selectedColor, setSelectedC
         >
           Reset Filters
         </span>
-        {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Boots', 'Heels', 'Suit','Button-Up Shirt'].map((type) => (
+        {['T-shirt', 'Jacket', 'Sweater', 'Shorts', 'Pants', 'Tank-Top', 'Sandals', 'Sneakers', 'Dress Shoes', 'Boots', 'Heels', 'Suit','Button-Up Shirt'].map((type) => (
           <span
             key={type}
             onClick={() => handleFilterClick(type)}
