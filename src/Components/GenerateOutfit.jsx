@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
 import GetWeather from './GetWeather';
 import { useNavigate } from 'react-router-dom';
-import "./GenerateOutfit.css"
 
 const GenerateOutfit = (currentWeather) => {
   const [clothes, setClothes] = useState([]);
