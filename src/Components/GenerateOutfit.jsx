@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import ClothesCard from './ClothesCard';
 import GetWeather from './GetWeather';
 import { useNavigate } from 'react-router-dom';
+import "./GenerateOutfit.css"
 
 const GenerateOutfit = (currentWeather) => {
   const [clothes, setClothes] = useState([]);
@@ -228,8 +229,8 @@ const GenerateOutfit = (currentWeather) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-purple-400 min-h-screen flex flex-col items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full mb-8">
+    <div className="mx-auto px-4 py-8 bg-purple-400 min-h-screen flex flex-col items-center justify-center background-drippy">
+      <div className="bg-white p-6 rounded-lg shadow-dark-lg max-w-3xl w-full mb-8">
         <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Locations</h1>
         {loading ? (
           <p className="text-center">Loading...</p>
@@ -237,7 +238,7 @@ const GenerateOutfit = (currentWeather) => {
           <div className="text-center">
             <select 
               onChange={handleLocationChange} 
-              className="bg-white border border-gray-300 rounded px-4 py-2 mb-4 w-1/2 text-center"
+              className="bg-white border border-gray-300 rounded px-4 py-2 mb-4 w-1/2 text-center shadow-lg"
             >
               <option value="">Select a Location</option>
               {locations.map((location) => (
@@ -263,14 +264,14 @@ const GenerateOutfit = (currentWeather) => {
         )}
       </div>
   
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
+      <div className="bg-white p-6 rounded-lg shadow-dark-lg max-w-3xl w-full text-center ">
         <h1 className="text-3xl font-bold text-center mb-4 text-purple-700">My Outfit</h1>
         <div className="text-center mb-4">
           <select 
             onChange={handleOccasionChange} 
             value={selectedOccasion}
             disabled={!selectedLocation}
-            className="bg-white border border-gray-300 rounded px-4 py-2 w-1/2 text-center mb-4"
+            className="bg-white border border-gray-300 rounded px-4 py-2 w-1/2 text-center mb-4 shadow-lg"
           >
             <option value="">Select Occasion</option>
             <option value="Casual">Casual</option>
@@ -304,7 +305,7 @@ const GenerateOutfit = (currentWeather) => {
         <button 
           onClick={generateOutfit}
           disabled={!selectedLocation || !selectedOccasion}
-          className="bg-purple-700 text-white px-4 py-2 rounded"
+          className="bg-purple-700 text-white px-4 py-2 rounded mb-5 shadow-dark-lg"
         >
           Generate Outfit
         </button>
@@ -313,7 +314,7 @@ const GenerateOutfit = (currentWeather) => {
         ) : error ? (
           <p className="text-center">{error}</p>
         ) : (
-          <div className="outfit flex flex-col items-center mt-4">
+          <div className="outfit flex flex-col items-center mt-4 ">
             {generateClicked && outfit.length === 0 ? (
               <div>
               <p>Looks like you don't have any clothes for today's weather...</p>
@@ -328,7 +329,7 @@ const GenerateOutfit = (currentWeather) => {
               </div>
             ) : (
               clothes.filter(item => outfit.includes(item.clothes_id)).map((item) => (
-                <ClothesCard key={item.clothes_id} {...item} />
+                <ClothesCard key={item.clothes_id} {...item}/>
               ))
             )}
           </div>
